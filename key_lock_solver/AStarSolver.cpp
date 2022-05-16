@@ -124,7 +124,7 @@ struct Step {
     return !simd_equal(diff, Vec3{});
   }
   inline operator bool() const {
-    return hasMove() && hasPieces();
+    return hasMove() || hasPieces();
   }
   inline bool operator==(const Step& other) const {
     if (!simd_equal(diff, other.diff)) {return false;}
@@ -293,6 +293,10 @@ void AStarSolver::reset(KeyLockPuzzleState target) {
 
     std::vector<KeyLockPuzzleState> solution =
     a_star<KeyLockPuzzleState>(lastSolveState, [&](KeyLockPuzzleState s){
+      if (s.removedCount() < i) { return false;}
+      for (size_t j = 0; j < PIECE_COUNT; ++j) {
+        if (s.isRemovedPiece(j) && !target.isRemovedPiece(j)) {return false;}
+      }
       return s.removedCount() > i || s == target;
     }, [&](KeyLockPuzzleState s){return possibleMoves(s);}, [&](KeyLockPuzzleState s){return resetHeuristic(s, target);});
     if (solution.empty()) {

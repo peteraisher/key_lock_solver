@@ -25,8 +25,8 @@ int main(int argc, const char * argv[]) {
     {0, 0, 0}
   }};
 
-  solver.reset(start);
+//  solver.reset(start);
 //  solver.solve(start);
-//  solver.solve();
+  solver.solve();
   return 0;
 }
