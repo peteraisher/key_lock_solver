@@ -19,12 +19,7 @@ struct Node {
   std::shared_ptr<Node> parent;
   float cost = 0;
   float heuristic = 0;
-  bool operator==(const Node<T> &other) const {
-    return state == other.state
-      && parent == other.parent
-      && cost == other.cost
-      && heuristic == other.heuristic;
-  }
+  bool operator==(const Node<T> &other) const;
   bool operator<(const Node<T>& other) const {
     return cost + heuristic < other.cost + other.heuristic;
   }
@@ -35,16 +30,6 @@ struct Node {
   : state(state), parent(parent), cost(cost), heuristic(heuristic) {}
 };
 
-namespace std {
-template <class T> struct hash<Node<T>> {
-  size_t operator()(const Node<T> & x) const {
-    size_t seed = hash<T>()(x.state);
-    hash_combine(seed, x.parent);
-    hash_combine(seed, x.cost);
-    hash_combine(seed, x.heuristic);
-    return seed;
-  }
-};
-}   // namespace std
+
 
 #endif  // KEY_LOCK_SOLVER_SEARCH_NODE_HPP_
