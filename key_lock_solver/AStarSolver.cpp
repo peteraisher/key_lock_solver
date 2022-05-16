@@ -159,12 +159,36 @@ struct Step {
       }
     }
   }
+  inline void printCoordinateDirection(std::ostream& out = std::cout) const {
+    char d = 'x';
+    char s = '+';
+    char v = 0;
+    if (diff.x) {
+      v = diff.x;
+    } else if (diff.y) {
+      v = diff.y;
+      d = 'y';
+    } else if (diff.z) {
+      v = diff.z;
+      d = 'z';
+    }
+    if (v < 0) {
+      s = '-';
+      v = -v;
+    }
+    out << s << d << " dir";
+    if (v > 1) {
+      out << ' ' << int(v) << " units";
+    }
+  }
   inline void printInstruction(std::ostream& out = std::cout) const {
     if (!simd_equal(diff, {})) {
       out << "move ";
       printPieceNameList(out);
-      out << " by (" << int(diff.x) << ", " << int(diff.y)
-        << ", " << int(diff.z) << ")" << std::endl;
+      out << " in ";
+      printCoordinateDirection(out);
+      out << /* " by (" << int(diff.x) << ", " << int(diff.y)
+        << ", " << int(diff.z) << ")" <<*/ std::endl;
     } else if (hasPieces()) {
       out << "remove ";
       printPieceNameList(out);
@@ -224,8 +248,8 @@ static void printSolution(std::vector<KeyLockPuzzleState> solution,
       steps[i].removeCommonPieces(steps[j]);
     }
   }
-  consolidateStepsInSameDirection(steps);
   removeEmptySteps(steps);
+  consolidateStepsInSameDirection(steps);
   for (const auto& step : steps) {
     step.printInstruction(out);
   }
@@ -256,7 +280,10 @@ std::vector<std::pair<KeyLockPuzzleState, float>> AStarSolver::possibleMoves(Key
       std::array<bool, PIECE_COUNT> moved {};
       size_t res = cascadeMove(i, move, stateCopy, moved);
       if (res) {
-        result.push_back({stateCopy, static_cast<float>(res)});
+        float cost = static_cast<float>(res);
+//        cost = 1.f + ((cost - 1.f) * 0.875f);
+        cost = sqrtf(cost);
+        result.push_back({stateCopy, cost});
       }
     }
 
