@@ -1,3 +1,4 @@
+//  Copyright (c) 2022 Peter Aisher
 //
 //  Node.hpp
 //  key_lock_solver
@@ -5,12 +6,12 @@
 //  Created by Peter Aisher on 12.05.2022.
 //
 
-#ifndef Node_hpp
-#define Node_hpp
+#ifndef KEY_LOCK_SOLVER_SEARCH_NODE_HPP_
+#define KEY_LOCK_SOLVER_SEARCH_NODE_HPP_
 
 #include <functional>
 #include <memory>
-#include "hash_combine.h"
+#include "../../key_lock_solver/util/hash_combine.h"
 
 template <class T>
 struct Node {
@@ -44,6 +45,6 @@ template <class T> struct hash<Node<T>> {
     return seed;
   }
 };
-}
+}   // namespace std
 
-#endif /* Node_hpp */
+#endif  // KEY_LOCK_SOLVER_SEARCH_NODE_HPP_

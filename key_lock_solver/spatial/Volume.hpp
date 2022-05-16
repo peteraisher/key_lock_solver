@@ -1,3 +1,4 @@
+//  Copyright (c) 2022 Peter Aisher
 //
 //  Volume.hpp
 //  key_lock_solver
@@ -5,12 +6,13 @@
 //  Created by Peter Aisher on 12.05.2022.
 //
 
-#ifndef Volume_hpp
-#define Volume_hpp
+#ifndef KEY_LOCK_SOLVER_SPATIAL_VOLUME_HPP_
+#define KEY_LOCK_SOLVER_SPATIAL_VOLUME_HPP_
 
 #include <unordered_set>
-#include "vec.hpp"
-#include "BoundingBox.hpp"
+#include <limits>
+#include "../../key_lock_solver/spatial/vec.hpp"
+#include "../../key_lock_solver/spatial/BoundingBox.hpp"
 
 
 
@@ -63,4 +65,4 @@ struct Volume {
   }
 };
 
-#endif /* Volume_hpp */
+#endif  // KEY_LOCK_SOLVER_SPATIAL_VOLUME_HPP_

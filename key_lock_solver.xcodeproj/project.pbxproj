@@ -15,6 +15,7 @@
 		81771655282D543C00811E83 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771653282D543C00811E83 /* Node.cpp */; };
 		81771658282D586D00811E83 /* a_star.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771656282D586D00811E83 /* a_star.cpp */; };
 		8177165B282E83D400811E83 /* AStarSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771659282E83D400811E83 /* AStarSolver.cpp */; };
+		8177165F28330DCA00811E83 /* Step.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8177165D28330DCA00811E83 /* Step.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +48,8 @@
 		81771659282E83D400811E83 /* AStarSolver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AStarSolver.cpp; sourceTree = "<group>"; };
 		8177165A282E83D400811E83 /* AStarSolver.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AStarSolver.hpp; sourceTree = "<group>"; };
 		8177165C282F066E00811E83 /* hash_combine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hash_combine.h; sourceTree = "<group>"; };
+		8177165D28330DCA00811E83 /* Step.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Step.cpp; sourceTree = "<group>"; };
+		8177165E28330DCA00811E83 /* Step.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Step.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,16 +82,34 @@
 		8177163F282D001D00811E83 /* key_lock_solver */ = {
 			isa = PBXGroup;
 			children = (
-				8177165C282F066E00811E83 /* hash_combine.h */,
 				81771640282D001D00811E83 /* main.cpp */,
+				817716622833118B00811E83 /* search */,
+				817716612833116D00811E83 /* spatial */,
+				81771663283311BB00811E83 /* util */,
+			);
+			path = key_lock_solver;
+			sourceTree = "<group>";
+		};
+		817716612833116D00811E83 /* spatial */ = {
+			isa = PBXGroup;
+			children = (
 				81771648282D04E900811E83 /* vec.hpp */,
 				81771647282D04E900811E83 /* vec.cpp */,
 				8177164E282D3AC800811E83 /* Volume.hpp */,
 				8177164D282D3AC800811E83 /* Volume.cpp */,
 				8177164B282D064F00811E83 /* BoundingBox.hpp */,
 				8177164A282D064F00811E83 /* BoundingBox.cpp */,
+			);
+			path = spatial;
+			sourceTree = "<group>";
+		};
+		817716622833118B00811E83 /* search */ = {
+			isa = PBXGroup;
+			children = (
 				8177165A282E83D400811E83 /* AStarSolver.hpp */,
 				81771659282E83D400811E83 /* AStarSolver.cpp */,
+				8177165E28330DCA00811E83 /* Step.hpp */,
+				8177165D28330DCA00811E83 /* Step.cpp */,
 				81771657282D586D00811E83 /* a_star.hpp */,
 				81771656282D586D00811E83 /* a_star.cpp */,
 				81771654282D543C00811E83 /* Node.hpp */,
@@ -96,7 +117,15 @@
 				81771651282D50D100811E83 /* KeyLockPuzzleState.hpp */,
 				81771650282D50D100811E83 /* KeyLockPuzzleState.cpp */,
 			);
-			path = key_lock_solver;
+			path = search;
+			sourceTree = "<group>";
+		};
+		81771663283311BB00811E83 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				8177165C282F066E00811E83 /* hash_combine.h */,
+			);
+			path = util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -106,6 +135,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 81771644282D001D00811E83 /* Build configuration list for PBXNativeTarget "key_lock_solver" */;
 			buildPhases = (
+				817716602833102100811E83 /* ShellScript */,
 				81771639282D001D00811E83 /* Sources */,
 				8177163A282D001D00811E83 /* Frameworks */,
 				8177163B282D001D00811E83 /* CopyFiles */,
@@ -151,11 +181,32 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		817716602833102100811E83 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/Library/Frameworks/Python.framework/Versions/3.7/bin/cpplint --output=eclipse --filter=-whitespace/comma --recursive ./${TARGET_NAME}/*\n\nexit 0\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		81771639282D001D00811E83 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8177165F28330DCA00811E83 /* Step.cpp in Sources */,
 				81771658282D586D00811E83 /* a_star.cpp in Sources */,
 				81771652282D50D100811E83 /* KeyLockPuzzleState.cpp in Sources */,
 				8177164C282D064F00811E83 /* BoundingBox.cpp in Sources */,

@@ -1,3 +1,4 @@
+//  Copyright (c) 2022 Peter Aisher
 //
 //  main.cpp
 //  key_lock_solver
@@ -6,7 +7,7 @@
 //
 
 #include <iostream>
-#include "AStarSolver.hpp"
+#include "search/AStarSolver.hpp"
 
 int main(int argc, const char * argv[]) {
   // insert code here...
@@ -14,15 +15,15 @@ int main(int argc, const char * argv[]) {
 
   auto solver = AStarSolver();
   KeyLockPuzzleState start {{
-    Vec3{0, 0, 0}, // A
-    {0, 0, 0}, // B
-    {0, 0, 0}, // C
-    {0, 0, 0}, // D
-    {0, 0, 0}, // E
-    {0, 0, 0}, // F
-    {0, 0, 0}, // G
-    {0, 0, 0}, // H
-    {0, 0, 0}
+    Vec3{0, 0, 0},  // A
+    {0, 0, 0},      // B
+    {0, 0, 0},      // C
+    {0, 0, 0},      // D
+    {0, 0, 0},      // E
+    {0, 0, 0},      // F
+    {0, 0, 0},      // G
+    {0, 0, 0},      // H
+    {0, 0, 0}       // K
   }};
 
 //  solver.reset(start);

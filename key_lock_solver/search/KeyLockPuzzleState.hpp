@@ -1,3 +1,4 @@
+//  Copyright (c) 2022 Peter Aisher
 //
 //  KeyLockPuzzleState.hpp
 //  key_lock_solver
@@ -5,12 +6,13 @@
 //  Created by Peter Aisher on 12.05.2022.
 //
 
-#ifndef KeyLockPuzzleState_hpp
-#define KeyLockPuzzleState_hpp
+#ifndef KEY_LOCK_SOLVER_SEARCH_KEYLOCKPUZZLESTATE_HPP_
+#define KEY_LOCK_SOLVER_SEARCH_KEYLOCKPUZZLESTATE_HPP_
 
 #include <array>
-#include "vec.hpp"
-#include "hash_combine.h"
+#include <limits>
+#include "../../key_lock_solver/spatial/vec.hpp"
+#include "../../key_lock_solver/util/hash_combine.h"
 
 constexpr size_t PIECE_COUNT = 9;
 
@@ -45,7 +47,7 @@ struct KeyLockPuzzleState {
   }
   explicit KeyLockPuzzleState(std::array<Vec3, PIECE_COUNT> positions)
   : positions(positions) {}
-  KeyLockPuzzleState() {};
+  KeyLockPuzzleState() {}
 };
 
 namespace std {
@@ -53,17 +55,17 @@ template <>
 struct hash<KeyLockPuzzleState> {
   size_t operator()(const KeyLockPuzzleState & s) const {
     size_t seed = std::hash<Vec3>()(s.positions[0]);
-    hash_combine(seed, s.positions[1]);
-    hash_combine(seed, s.positions[2]);
-    hash_combine(seed, s.positions[3]);
-    hash_combine(seed, s.positions[4]);
-    hash_combine(seed, s.positions[5]);
-    hash_combine(seed, s.positions[6]);
-    hash_combine(seed, s.positions[7]);
-    hash_combine(seed, s.positions[8]);
+    hash_combine(&seed, s.positions[1]);
+    hash_combine(&seed, s.positions[2]);
+    hash_combine(&seed, s.positions[3]);
+    hash_combine(&seed, s.positions[4]);
+    hash_combine(&seed, s.positions[5]);
+    hash_combine(&seed, s.positions[6]);
+    hash_combine(&seed, s.positions[7]);
+    hash_combine(&seed, s.positions[8]);
     return seed;
   }
 };
-}
+}  // namespace std
 
-#endif /* KeyLockPuzzleState_hpp */
+#endif  // KEY_LOCK_SOLVER_SEARCH_KEYLOCKPUZZLESTATE_HPP_

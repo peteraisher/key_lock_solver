@@ -1,3 +1,4 @@
+//  Copyright (c) 2022 Peter Aisher
 //
 //  Volume.cpp
 //  key_lock_solver
@@ -5,5 +6,5 @@
 //  Created by Peter Aisher on 12.05.2022.
 //
 
-#include "Volume.hpp"
+#include "../../key_lock_solver/spatial/Volume.hpp"
 

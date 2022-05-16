@@ -1,3 +1,4 @@
+//  Copyright (c) 2022 Peter Aisher
 //
 //  vec.hpp
 //  key_lock_solver
@@ -5,10 +6,11 @@
 //  Created by Peter Aisher on 12.05.2022.
 //
 
-#ifndef vec_hpp
-#define vec_hpp
+#ifndef KEY_LOCK_SOLVER_SPATIAL_VEC_HPP_
+#define KEY_LOCK_SOLVER_SPATIAL_VEC_HPP_
 
 #include <immintrin.h>
+#include <limits>
 #include <functional>
 
 #if 0
@@ -40,8 +42,8 @@ template <> struct numeric_limits<Vec3> {
     return {c, c, c};
   }
 };
-}
+}   // namespace std
 
 #endif
 
-#endif /* vec_hpp */
+#endif  // KEY_LOCK_SOLVER_SPATIAL_VEC_HPP_

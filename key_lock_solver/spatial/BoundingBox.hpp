@@ -1,3 +1,4 @@
+//  Copyright (c) 2022 Peter Aisher
 //
 //  BoundingBox.hpp
 //  key_lock_solver
@@ -5,10 +6,12 @@
 //  Created by Peter Aisher on 12.05.2022.
 //
 
-#ifndef BoundingBox_hpp
-#define BoundingBox_hpp
+#ifndef KEY_LOCK_SOLVER_SPATIAL_BOUNDINGBOX_HPP_
+#define KEY_LOCK_SOLVER_SPATIAL_BOUNDINGBOX_HPP_
 
-#include "vec.hpp"
+#include <algorithm>
+
+#include "../../key_lock_solver/spatial/vec.hpp"
 
 struct BoundingBox {
   Vec3 min {};
@@ -25,4 +28,4 @@ struct BoundingBox {
   inline BoundingBox(Vec3 min, Vec3 max) : min(min), max(max) {}
 };
 
-#endif /* BoundingBox_hpp */
+#endif  // KEY_LOCK_SOLVER_SPATIAL_BOUNDINGBOX_HPP_

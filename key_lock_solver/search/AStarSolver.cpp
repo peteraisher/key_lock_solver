@@ -1,3 +1,4 @@
+//  Copyright (c) 2022 Peter Aisher
 //
 //  AStarSolver.cpp
 //  key_lock_solver
@@ -5,26 +6,115 @@
 //  Created by Peter Aisher on 13.05.2022.
 //
 
+#include "../../key_lock_solver/search/AStarSolver.hpp"
 #include <algorithm>
-#include "AStarSolver.hpp"
-#include "a_star.hpp"
 #include <iostream>
+#include "../search/a_star.hpp"
+#include "../search/Step.hpp"
+
+const Volume AStarSolver::box = {
+  0,0,0, 0,1,0, 0,2,0, 0,3,0, 0,4,0, 0,5,0, 0,6,0,
+  1,0,0, 1,1,0, 1,2,0, 1,3,0, 1,4,0, 1,5,0, 1,6,0,
+  2,0,0, 2,1,0, 2,2,0, 2,3,0, 2,4,0, 2,5,0, 2,6,0,
+  3,0,0, 3,1,0,                      3,5,0, 3,6,0,
+  4,0,0, 4,1,0, 4,2,0, 4,3,0, 4,4,0, 4,5,0, 4,6,0,
+  5,0,0, 5,1,0, 5,2,0, 5,3,0, 5,4,0, 5,5,0, 5,6,0,
+  6,0,0, 6,1,0, 6,2,0, 6,3,0, 6,4,0, 6,5,0, 6,6,0,
+
+  0,0,6, 0,1,6, 0,2,6, 0,3,6, 0,4,6, 0,5,6, 0,6,6,
+  1,0,6, 1,1,6, 1,2,6, 1,3,6, 1,4,6, 1,5,6, 1,6,6,
+  2,0,6, 2,1,6, 2,2,6, 2,3,6, 2,4,6, 2,5,6, 2,6,6,
+  3,0,6, 3,1,6,                      3,5,6, 3,6,6,
+  4,0,6, 4,1,6, 4,2,6, 4,3,6, 4,4,6, 4,5,6, 4,6,6,
+  5,0,6, 5,1,6, 5,2,6, 5,3,6, 5,4,6, 5,5,6, 5,6,6,
+  6,0,6, 6,1,6, 6,2,6, 6,3,6, 6,4,6, 6,5,6, 6,6,6,
+
+  0,0,1, 0,6,1, 6,0,1, 6,6,1,
+  0,0,2, 0,6,2, 6,0,2, 6,6,2,
+  0,0,3, 0,6,3, 6,0,3, 6,6,3,
+  0,0,4, 0,6,4, 6,0,4, 6,6,4,
+  0,0,5, 0,6,5, 6,0,5, 6,6,5
+};
+
+const std::array<Volume, PIECE_COUNT> AStarSolver::movablePieces = {
+  Volume{   // A
+    0,3,4, 0,3,5, 0,4,4, 0,4,5, 0,5,4, 0,5,5,
+    1,3,4, 1,5,4,
+    2,5,4, 2,5,5,
+    3,5,4,
+    4,5,4,
+    5,3,4, 5,5,4,
+    6,3,4, 6,3,5, 6,4,4, 6,4,5, 6,5,4, 6,5,5
+  },
+  {   // B
+    0,1,3, 0,1,4, 0,1,5, 0,2,3, 0,2,4, 0,2,5,
+    1,1,3, 1,1,4, 1,2,3, 1,2,4,
+    2,2,3, 2,2,4,
+    3,2,3,
+    4,2,3,
+    5,2,3,
+    6,1,3, 6,1,4, 6,1,5, 6,2,3, 6,2,4, 6,2,5
+  },
+  {   // C
+    0,1,1, 0,1,2, 0,2,1, 0,2,2, 0,3,1, 0,3,2,
+    1,1,2, 1,2,2,
+    2,1,2,
+    3,1,2,
+    4,1,2,
+    5,1,2, 5,2,2,
+    6,1,1, 6,1,2, 6,2,1, 6,2,2, 6,3,1, 6,3,2
+  },
+  {   // D
+    0,4,1, 0,4,2, 0,4,3, 0,5,1, 0,5,2, 0,5,3,
+    1,4,3,
+    2,4,3,
+    3,4,3,
+    4,4,3,
+    5,4,3,
+    6,4,1, 6,4,2, 6,4,3, 6,5,1, 6,5,2, 6,5,3
+  },
+  {   // E
+    1,0,4, 1,0,5, 1,1,5, 1,2,5, 1,3,5, 1,4,5, 1,5,5, 1,6,4, 1,6,5,
+    2,0,4, 2,0,5, 2,6,4, 2,6,5,
+    3,0,4, 3,0,5, 3,1,4, 3,1,5, 3,6,4, 3,6,5
+  },
+  {   // F
+    4,0,3, 4,0,4, 4,0,5, 4,1,5, 4,2,5, 4,3,5, 4,4,5, 4,5,5, 4,6,3, 4,6,4, 4,6,5,
+    5,0,3, 5,0,4, 5,0,5, 5,6,3, 5,6,4, 5,6,5
+  },
+  {   // G
+    3,0,1, 3,0,2, 3,1,1, 3,5,1, 3,5,2, 3,6,1, 3,6,2,
+    4,0,1, 4,0,2, 4,1,1, 4,2,1, 4,6,1, 4,6,2,
+    5,0,1, 5,0,2, 5,1,1, 5,2,1, 5,3,1, 5,4,1, 5,5,1, 5,6,1, 5,6,2
+  },
+  {   // H
+    1,0,1, 1,0,2, 1,0,3, 1,6,1, 1,6,2, 1,6,3,
+    2,0,1, 2,0,2, 2,0,3, 2,1,1, 2,2,1, 2,3,1,
+    2,4,1, 2,5,1, 2,5,3, 2,6,1, 2,6,2, 2,6,3,
+  },
+  {   // K
+    3,2,0, 3,2,4, 3,2,5, 3,2,6, 3,2,10, 3,2,11, 3,2,12, 3,3,0, 3,3,2, 3,3,3,
+    3,3,4, 3,3,6, 3,3,7, 3,3,8, 3,3,9, 3,3,10, 3,3,11, 3,3,12,
+    3,4,0, 3,4,1, 3,4,2, 3,4,4, 3,4,6, 3,4,10, 3,4,11, 3,4,12
+  }
+};
 
 size_t AStarSolver::cascadeMove(size_t index, Vec3 move,
-                              KeyLockPuzzleState &state, std::array<bool, PIECE_COUNT>& moved) {
-  const auto startPos = state.positions[index];
+                                KeyLockPuzzleState* state,
+                                std::array<bool, PIECE_COUNT>* moved) {
+  const auto startPos = state->positions[index];
   const auto newPos = startPos + move;
   if (boxCollision(index, newPos)) {
     return 0;
   }
-  state.positions[index] = newPos;
-  moved[index] = true;
+  state->positions[index] = newPos;
+  (*moved)[index] = true;
 
   size_t tot = 0;
   for (size_t i = 0; i < PIECE_COUNT; ++i) {
-    if (index != i && !state.isRemovedPiece(i)
-        && haveCollision(index, i, newPos, state.positions[i])) {
-      if (moved[i]) { return 0; }
+    if (index != i && !state->isRemovedPiece(i)
+        && haveCollision(index, i, newPos, state->positions[i])) {
+      if ((*moved)[i]) { return 0; }
       size_t res = cascadeMove(i, move, state, moved);
       if (res) {
         tot += res;
@@ -47,7 +137,8 @@ bool AStarSolver::boxCollision(size_t index, Vec3 offset) {
   return result;
 }
 
-bool AStarSolver::haveCollision(size_t firstIndex, size_t secondIndex, Vec3 firstPosition, Vec3 secondPosition) {
+bool AStarSolver::haveCollision(size_t firstIndex, size_t secondIndex,
+                                Vec3 firstPosition, Vec3 secondPosition) {
   Vec3 offset;
   if (secondIndex < firstIndex) {
     auto t = firstIndex;
@@ -65,7 +156,8 @@ bool AStarSolver::haveCollision(size_t firstIndex, size_t secondIndex, Vec3 firs
   if (!firstBody.boundingBox.intersects(secondBody.boundingBox, offset)) {
     return false;
   }
-  CollisionCache::CacheValue cv = collisionCache.cacheValue(firstIndex, secondIndex, offset);
+  CollisionCache::CacheValue cv =
+    collisionCache.cacheValue(firstIndex,secondIndex, offset);
   if (cv) {
     return cv == CollisionCache::Collision;
   }
@@ -88,7 +180,8 @@ static inline float searchHeuristic(KeyLockPuzzleState state) {
   return static_cast<float>(result);
 }
 
-static inline float resetHeuristic(KeyLockPuzzleState state, KeyLockPuzzleState target) {
+static inline float resetHeuristic(KeyLockPuzzleState state,
+                                   KeyLockPuzzleState target) {
   int result = 0;
   size_t i = 0;
   for (; i < 4; ++i) {
@@ -101,107 +194,11 @@ static inline float resetHeuristic(KeyLockPuzzleState state, KeyLockPuzzleState 
   return static_cast<float>(result);
 }
 
-struct Step {
-  std::array<bool, PIECE_COUNT> piece_flags = {};
-  Vec3 diff = {};
-  static constexpr std::array<char, PIECE_COUNT + 1> names =
-    { "ABCDEFGHK" };
-  inline void setFlag(size_t i) {piece_flags[i] = true;}
-  inline void removeCommonPieces(Step& other) {
-    for (size_t i = 0; i < PIECE_COUNT; ++i) {
-      if (piece_flags[i] && other.piece_flags[i]) {
-        piece_flags[i] = false;
-        other.piece_flags[i] = false;
-      }
-    }
-  }
-  inline bool hasPieces() const {
-    return std::any_of(piece_flags.begin(),
-                       piece_flags.end(),
-                       [](bool v){return v;});
-  }
-  inline bool hasMove() const {
-    return !simd_equal(diff, Vec3{});
-  }
-  inline operator bool() const {
-    return hasMove() || hasPieces();
-  }
-  inline bool operator==(const Step& other) const {
-    if (!simd_equal(diff, other.diff)) {return false;}
-    for (size_t i = 0; i < PIECE_COUNT; ++i) {
-      if (piece_flags[i] != other.piece_flags[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-  inline Step() {}
-  inline Step(const KeyLockPuzzleState& prev,
-              const KeyLockPuzzleState& curr) {
-    for (size_t i = 0; i < PIECE_COUNT; ++i) {
-      if (!simd_equal(prev.positions[i], curr.positions[i])) {
-        if (!prev.isRemovedPiece(i) && !curr.isRemovedPiece(i)) {
-          diff = curr.positions[i] - prev.positions[i];
-        }
-        setFlag(i);
-      }
-    }
-  }
-  inline void printPieceNameList(std::ostream& out = std::cout) const {
-    size_t printed_count = 0;
-    for (size_t i = 0; i < PIECE_COUNT; ++i) {
-      if (piece_flags[i]) {
-        if (printed_count) {
-          out << ", ";
-        }
-        out << names[i];
-        ++printed_count;
-      }
-    }
-  }
-  inline void printCoordinateDirection(std::ostream& out = std::cout) const {
-    char d = 'x';
-    char s = '+';
-    char v = 0;
-    if (diff.x) {
-      v = diff.x;
-    } else if (diff.y) {
-      v = diff.y;
-      d = 'y';
-    } else if (diff.z) {
-      v = diff.z;
-      d = 'z';
-    }
-    if (v < 0) {
-      s = '-';
-      v = -v;
-    }
-    out << s << d << " dir";
-    if (v > 1) {
-      out << ' ' << int(v) << " units";
-    }
-  }
-  inline void printInstruction(std::ostream& out = std::cout) const {
-    if (!simd_equal(diff, {})) {
-      out << "move ";
-      printPieceNameList(out);
-      out << " in ";
-      printCoordinateDirection(out);
-      out << /* " by (" << int(diff.x) << ", " << int(diff.y)
-        << ", " << int(diff.z) << ")" <<*/ std::endl;
-    } else if (hasPieces()) {
-      out << "remove ";
-      printPieceNameList(out);
-      out << std::endl;
-    }
-  }
-};
-
-static void consolidateStepsInSameDirection(std::vector<Step>& steps) {
-  auto consolidatedStep = steps.begin();
-  auto readStep = steps.begin();
-  auto step = steps.begin();
-  const auto end = steps.end();
+static void consolidateStepsInSameDirection(std::vector<Step>* steps) {
+  auto consolidatedStep = steps->begin();
+  auto readStep = steps->begin();
+  auto step = steps->begin();
+  const auto end = steps->end();
   while (++step < end) {
     size_t count = 0;
     while (*step == *readStep) {
@@ -215,13 +212,13 @@ static void consolidateStepsInSameDirection(std::vector<Step>& steps) {
     ++consolidatedStep;
     readStep = step;
   }
-  steps.resize(consolidatedStep - steps.begin());
+  steps->resize(consolidatedStep - steps->begin());
 }
 
-static void removeEmptySteps(std::vector<Step>& steps) {
-  auto writeStep = steps.begin();
-  auto readStep = steps.begin();
-  const auto end = steps.end();
+static void removeEmptySteps(std::vector<Step>* steps) {
+  auto writeStep = steps->begin();
+  auto readStep = steps->begin();
+  const auto end = steps->end();
   while (readStep < end) {
     if (*readStep) {
       *writeStep = *readStep;
@@ -229,7 +226,7 @@ static void removeEmptySteps(std::vector<Step>& steps) {
     }
     ++readStep;
   }
-  steps.resize(writeStep - steps.begin());
+  steps->resize(writeStep - steps->begin());
 }
 
 static void printSolution(std::vector<KeyLockPuzzleState> solution,
@@ -245,17 +242,18 @@ static void printSolution(std::vector<KeyLockPuzzleState> solution,
   }
   for (size_t i = 0, j = 1; j < steps.size(); ++i, ++j) {
     if (simd_equal(steps[i].diff, -steps[j].diff)) {
-      steps[i].removeCommonPieces(steps[j]);
+      steps[i].removeCommonPieces(&steps[j]);
     }
   }
-  removeEmptySteps(steps);
-  consolidateStepsInSameDirection(steps);
+  removeEmptySteps(&steps);
+  consolidateStepsInSameDirection(&steps);
   for (const auto& step : steps) {
     step.printInstruction(out);
   }
 }
 
-std::vector<std::pair<KeyLockPuzzleState, float>> AStarSolver::possibleMoves(KeyLockPuzzleState state) {
+std::vector<std::pair<KeyLockPuzzleState, float>>
+AStarSolver::possibleMoves(KeyLockPuzzleState state) {
   std::vector<std::pair<KeyLockPuzzleState, float>> result {};
   result.reserve(48);
   std::array<Vec3, 6> moves = {
@@ -278,7 +276,7 @@ std::vector<std::pair<KeyLockPuzzleState, float>> AStarSolver::possibleMoves(Key
     for (const auto& move : moves) {
       auto stateCopy = state;
       std::array<bool, PIECE_COUNT> moved {};
-      size_t res = cascadeMove(i, move, stateCopy, moved);
+      size_t res = cascadeMove(i, move, &stateCopy, &moved);
       if (res) {
         float cost = static_cast<float>(res);
 //        cost = 1.f + ((cost - 1.f) * 0.875f);
@@ -286,7 +284,6 @@ std::vector<std::pair<KeyLockPuzzleState, float>> AStarSolver::possibleMoves(Key
         result.push_back({stateCopy, cost});
       }
     }
-
   }
   return result;
 }
@@ -296,9 +293,11 @@ void AStarSolver::solve(KeyLockPuzzleState state) {
   std::vector<KeyLockPuzzleState> totalSolution = {state};
 
   for (size_t i = 0; i < 9; ++i) {
-
     std::vector<KeyLockPuzzleState> solution =
-    a_star<KeyLockPuzzleState>(lastSolveState, [&i](KeyLockPuzzleState s){return s.removedCount() > i;}, [&](KeyLockPuzzleState s){return possibleMoves(s);}, searchHeuristic);
+    a_star<KeyLockPuzzleState>(
+      lastSolveState,
+      [&i](KeyLockPuzzleState s){return s.removedCount() > i;},
+      [&](KeyLockPuzzleState s){return possibleMoves(s);}, searchHeuristic);
     if (solution.empty()) {
       auto rc = lastSolveState.removedCount();
       std::cout << "Failed to find solution on step " << i + 1 << std::endl;
@@ -306,7 +305,8 @@ void AStarSolver::solve(KeyLockPuzzleState state) {
       return;
     }
     totalSolution.pop_back();
-    totalSolution.insert(totalSolution.end(), solution.rbegin(), solution.rend()); // append reversed solution to end
+    totalSolution.insert(totalSolution.end(),
+                         solution.rbegin(), solution.rend());
     lastSolveState = totalSolution.back();
   }
   printSolution(totalSolution, state);
@@ -317,15 +317,18 @@ void AStarSolver::reset(KeyLockPuzzleState target) {
   KeyLockPuzzleState lastSolveState = state;
   std::vector<KeyLockPuzzleState> totalSolution = {state};
   for (size_t i = 0; i <= target.removedCount(); ++i) {
-
     std::vector<KeyLockPuzzleState> solution =
-    a_star<KeyLockPuzzleState>(lastSolveState, [&](KeyLockPuzzleState s){
-      if (s.removedCount() < i) { return false;}
-      for (size_t j = 0; j < PIECE_COUNT; ++j) {
-        if (s.isRemovedPiece(j) && !target.isRemovedPiece(j)) {return false;}
-      }
-      return s.removedCount() > i || s == target;
-    }, [&](KeyLockPuzzleState s){return possibleMoves(s);}, [&](KeyLockPuzzleState s){return resetHeuristic(s, target);});
+    a_star<KeyLockPuzzleState>(
+      lastSolveState,
+      [&](KeyLockPuzzleState s){
+        if (s.removedCount() < i) { return false;}
+        for (size_t j = 0; j < PIECE_COUNT; ++j) {
+          if (s.isRemovedPiece(j) && !target.isRemovedPiece(j)) {return false;}
+        }
+        return s.removedCount() > i || s == target;
+      },
+      [&](KeyLockPuzzleState s){return possibleMoves(s);},
+      [&](KeyLockPuzzleState s){return resetHeuristic(s, target);});
     if (solution.empty()) {
       auto rc = lastSolveState.removedCount();
       std::cout << "Failed to find solution on step " << i + 1 << std::endl;
@@ -333,7 +336,8 @@ void AStarSolver::reset(KeyLockPuzzleState target) {
       return;
     }
     totalSolution.pop_back();
-    totalSolution.insert(totalSolution.end(), solution.rbegin(), solution.rend()); // append reversed solution to end
+    totalSolution.insert(totalSolution.end(),
+                         solution.rbegin(), solution.rend());
     lastSolveState = totalSolution.back();
   }
   std::reverse(totalSolution.begin(), totalSolution.end());

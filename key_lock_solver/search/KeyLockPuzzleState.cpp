@@ -1,3 +1,4 @@
+//  Copyright (c) 2022 Peter Aisher
 //
 //  KeyLockPuzzleState.cpp
 //  key_lock_solver
@@ -5,4 +6,4 @@
 //  Created by Peter Aisher on 12.05.2022.
 //
 
-#include "KeyLockPuzzleState.hpp"
+#include "../../key_lock_solver/search/KeyLockPuzzleState.hpp"
