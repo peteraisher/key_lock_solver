@@ -16,6 +16,7 @@
 		81771658282D586D00811E83 /* a_star.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771656282D586D00811E83 /* a_star.cpp */; };
 		8177165B282E83D400811E83 /* AStarSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771659282E83D400811E83 /* AStarSolver.cpp */; };
 		8177165F28330DCA00811E83 /* Step.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8177165D28330DCA00811E83 /* Step.cpp */; };
+		81771666283322D000811E83 /* CollisionCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771664283322D000811E83 /* CollisionCache.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,6 +51,8 @@
 		8177165C282F066E00811E83 /* hash_combine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hash_combine.h; sourceTree = "<group>"; };
 		8177165D28330DCA00811E83 /* Step.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Step.cpp; sourceTree = "<group>"; };
 		8177165E28330DCA00811E83 /* Step.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Step.hpp; sourceTree = "<group>"; };
+		81771664283322D000811E83 /* CollisionCache.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionCache.cpp; sourceTree = "<group>"; };
+		81771665283322D000811E83 /* CollisionCache.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CollisionCache.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +109,8 @@
 		817716622833118B00811E83 /* search */ = {
 			isa = PBXGroup;
 			children = (
+				81771665283322D000811E83 /* CollisionCache.hpp */,
+				81771664283322D000811E83 /* CollisionCache.cpp */,
 				8177165A282E83D400811E83 /* AStarSolver.hpp */,
 				81771659282E83D400811E83 /* AStarSolver.cpp */,
 				8177165E28330DCA00811E83 /* Step.hpp */,
@@ -207,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8177165F28330DCA00811E83 /* Step.cpp in Sources */,
+				81771666283322D000811E83 /* CollisionCache.cpp in Sources */,
 				81771658282D586D00811E83 /* a_star.cpp in Sources */,
 				81771652282D50D100811E83 /* KeyLockPuzzleState.cpp in Sources */,
 				8177164C282D064F00811E83 /* BoundingBox.cpp in Sources */,
