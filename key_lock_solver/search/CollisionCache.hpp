@@ -26,7 +26,7 @@ class CollisionCache {
     size_t bitOffset;
   };
   uint64_t storage[5400] = {};
-  
+
   Index cacheIndex(size_t pairIndex, Vec3 offset) const;
   inline size_t pairIndex(size_t a, size_t b) const {
     return (((15 - a) * a) >> 1) + (b - 1);
