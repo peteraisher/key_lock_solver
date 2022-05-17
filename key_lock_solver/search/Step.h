@@ -11,6 +11,7 @@
 #include "../../key_lock_solver/search/KeyLockPuzzleState.h"
 
 namespace key_lock_solver {
+namespace impl {
 
 struct Step {
   Vec3 diff {};
@@ -31,6 +32,7 @@ struct Step {
   void printCoordinateDirection(std::ostream& out = std::cout) const;
 };
 
+}   // namespace impl
 }   // namespace key_lock_solver
 
 #endif  // KEY_LOCK_SOLVER_SEARCH_STEP_H_

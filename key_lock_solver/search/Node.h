@@ -12,6 +12,7 @@
 #include "../../key_lock_solver/util/hash_combine.h"
 
 namespace key_lock_solver {
+namespace impl {
 
 template <class T>
 struct Node {
@@ -31,6 +32,7 @@ struct Node {
 };
 
 
+}   // namespace impl
 }   // namespace key_lock_solver
 
 #endif  // KEY_LOCK_SOLVER_SEARCH_NODE_H_

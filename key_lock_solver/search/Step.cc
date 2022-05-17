@@ -7,6 +7,7 @@
 #include "../../key_lock_solver/search/Step.h"
 
 namespace key_lock_solver {
+namespace impl {
 
 bool Step::hasPieces() const {
   return std::any_of(piece_flags.begin(), piece_flags.end(),
@@ -92,5 +93,7 @@ void Step::printInstruction(std::ostream& out) const {
     out << std::endl;
   }
 }
+
+}   // namespace impl
 
 }   // namespace key_lock_solver

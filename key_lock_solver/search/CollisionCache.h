@@ -10,6 +10,7 @@
 #include "../../key_lock_solver/spatial/vec.h"
 
 namespace key_lock_solver {
+namespace impl {
 
 class CollisionCache {
  public:
@@ -48,6 +49,7 @@ class CollisionCache {
   void setCacheValue(size_t a, size_t b, Vec3 offset, CacheValue value);
 };
 
+}   // namespace impl
 }   // namespace key_lock_solver
 
 #endif  // KEY_LOCK_SOLVER_SEARCH_COLLISIONCACHE_H_

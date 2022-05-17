@@ -12,6 +12,10 @@
 
 namespace key_lock_solver {
 
+using impl::Step;
+using impl::a_star;
+using impl::Volume;
+
 const Volume AStarSolver::box = {
   0,0,0, 0,1,0, 0,2,0, 0,3,0, 0,4,0, 0,5,0, 0,6,0,
   1,0,0, 1,1,0, 1,2,0, 1,3,0, 1,4,0, 1,5,0, 1,6,0,
@@ -129,7 +133,7 @@ size_t AStarSolver::cascadeMove(size_t index, Vec3 move,
 bool AStarSolver::boxCollision(size_t index, Vec3 offset) {
   CollisionCache::CacheValue cv = collisionCache.boxCacheValue(index, offset);
   if (cv) {
-    return cv == CollisionCache::Collision;
+    return cv == impl::CollisionCache::Collision;
   }
   bool result = movablePieces[index].pointsIntersect(box, offset);
   cv = result ? CollisionCache::Collision : CollisionCache::NoCollision;

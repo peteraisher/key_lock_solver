@@ -7,6 +7,7 @@
 #include "../../key_lock_solver/search/CollisionCache.h"
 
 namespace key_lock_solver {
+namespace impl {
 
 CollisionCache::Index
 CollisionCache::cacheIndex(size_t pairIndex, Vec3 offset) const {
@@ -43,4 +44,5 @@ CollisionCache::setCacheValue(size_t a, size_t b,
   setValue(index, value);
 }
 
+}   // namespace impl
 }   // namespace key_lock_solver

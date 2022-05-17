@@ -15,6 +15,7 @@
 #include "../../key_lock_solver/search/Node.h"
 
 namespace key_lock_solver {
+namespace impl {
 
 template <class T>
 std::vector<T> a_star(
@@ -23,6 +24,7 @@ std::vector<T> a_star(
         std::function<std::vector<std::pair<T, float>>(T)> successorFunc,
         std::function<float(T)> heuristicFunc);
 
+}   // namespace impl
 }   // namespace key_lock_solver
 
 #endif  // KEY_LOCK_SOLVER_SEARCH_A_STAR_H_

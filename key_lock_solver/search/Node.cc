@@ -7,6 +7,7 @@
 #include "../../key_lock_solver/search/Node.h"
 
 namespace key_lock_solver {
+namespace impl {
 
 template <class T>
 bool Node<T>::operator==(const Node<T> &other) const {
@@ -16,4 +17,5 @@ bool Node<T>::operator==(const Node<T> &other) const {
     && heuristic == other.heuristic;
 }
 
+}   // namespace impl
 }   // namespace key_lock_solver

@@ -6,6 +6,10 @@
 
 #include "../../key_lock_solver/spatial/Volume.h"
 
+namespace key_lock_solver {
+
+namespace impl {
+
 bool Volume::pointsIntersect(const Volume& other, Vec3 offset) const {
   return std::any_of(points.begin(), points.end(), [&](const auto& p) {
     return other.points.find(p + offset) != other.points.end();
@@ -32,3 +36,6 @@ Volume::Volume(std::initializer_list<char> il)
     boundingBox.max = simd_max(boundingBox.max, point);
   }
 }
+
+}   // namespace impl
+}   // namespace key_lock_solver

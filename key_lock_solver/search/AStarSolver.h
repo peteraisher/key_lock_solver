@@ -18,6 +18,8 @@
 namespace key_lock_solver {
 
 class AStarSolver {
+  using CollisionCache = impl::CollisionCache;
+  using Volume = impl::Volume;
   CollisionCache collisionCache;
 
   static const Volume box;

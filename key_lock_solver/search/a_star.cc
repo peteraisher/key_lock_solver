@@ -8,6 +8,7 @@
 #include "../../key_lock_solver/search/KeyLockPuzzleState.h"
 
 namespace key_lock_solver {
+namespace impl {
 
 template <class T>
 std::vector<T> backtrack(std::shared_ptr<Node<T>> goalNode) {
@@ -95,4 +96,5 @@ std::vector<KeyLockPuzzleState> a_star(
         SuccessorFunc<KeyLockPuzzleState> successorFunc,
         std::function<float(KeyLockPuzzleState)> heuristicFunc);
 
+}   // namespace impl
 }   // namespace key_lock_solver

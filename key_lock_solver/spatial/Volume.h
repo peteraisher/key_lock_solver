@@ -13,6 +13,8 @@
 #include "../../key_lock_solver/spatial/BoundingBox.h"
 
 
+namespace key_lock_solver {
+namespace impl {
 
 typedef std::unordered_set<Vec3> PointSet;
 
@@ -25,5 +27,9 @@ struct Volume {
   }
   Volume(std::initializer_list<char> il);
 };
+
+}   // namespace impl
+
+}   // namespace key_lock_solver
 
 #endif  // KEY_LOCK_SOLVER_SPATIAL_VOLUME_H_

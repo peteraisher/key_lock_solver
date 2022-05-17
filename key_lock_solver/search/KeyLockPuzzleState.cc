@@ -37,7 +37,8 @@ bool KeyLockPuzzleState::operator==(const KeyLockPuzzleState& other) const {
 namespace std {
 size_t hash<key_lock_solver::KeyLockPuzzleState>::operator()
 (const key_lock_solver::KeyLockPuzzleState& s) const {
-  size_t seed = std::hash<Vec3>()(s.positions[0]);
+  using key_lock_solver::impl::hash_combine;
+  size_t seed = std::hash<key_lock_solver::Vec3>()(s.positions[0]);
   hash_combine(&seed, s.positions[1]);
   hash_combine(&seed, s.positions[2]);
   hash_combine(&seed, s.positions[3]);
