@@ -1,12 +1,12 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  KeyLockPuzzleState.cpp
+//  KeyLockPuzzleState.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#include "../../key_lock_solver/search/KeyLockPuzzleState.hpp"
+#include "../../key_lock_solver/search/KeyLockPuzzleState.h"
+
+namespace key_lock_solver {
 
 bool KeyLockPuzzleState::canRemovePiece(size_t index) const {
   switch (index >> 2) {
@@ -32,9 +32,11 @@ bool KeyLockPuzzleState::operator==(const KeyLockPuzzleState& other) const {
   }
   return true;
 }
+}   // namespace key_lock_solver
 
 namespace std {
-size_t hash<KeyLockPuzzleState>::operator()(const KeyLockPuzzleState& s) const {
+size_t hash<key_lock_solver::KeyLockPuzzleState>::operator()
+(const key_lock_solver::KeyLockPuzzleState& s) const {
   size_t seed = std::hash<Vec3>()(s.positions[0]);
   hash_combine(&seed, s.positions[1]);
   hash_combine(&seed, s.positions[2]);

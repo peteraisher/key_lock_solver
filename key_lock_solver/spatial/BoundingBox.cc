@@ -1,12 +1,10 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  BoundingBox.cpp
+//  BoundingBox.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#include "../../key_lock_solver/spatial/BoundingBox.hpp"
+#include "../../key_lock_solver/spatial/BoundingBox.h"
 
 bool BoundingBox::intersects(const BoundingBox& other, Vec3 offset) const {
   const Vec3 movedMax = max + offset;

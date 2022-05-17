@@ -1,12 +1,10 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  vec.cpp
+//  vec.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#include "../../key_lock_solver/spatial/vec.hpp"
+#include "../../key_lock_solver/spatial/vec.h"
 
 namespace std {
 size_t hash<Vec3>::operator()(const Vec3 & x) const {

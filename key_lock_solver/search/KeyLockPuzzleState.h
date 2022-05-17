@@ -1,18 +1,18 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  KeyLockPuzzleState.hpp
+//  KeyLockPuzzleState.h
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#ifndef KEY_LOCK_SOLVER_SEARCH_KEYLOCKPUZZLESTATE_HPP_
-#define KEY_LOCK_SOLVER_SEARCH_KEYLOCKPUZZLESTATE_HPP_
+#ifndef KEY_LOCK_SOLVER_SEARCH_KEYLOCKPUZZLESTATE_H_
+#define KEY_LOCK_SOLVER_SEARCH_KEYLOCKPUZZLESTATE_H_
 
 #include <array>
 #include <limits>
-#include "../../key_lock_solver/spatial/vec.hpp"
+#include "../../key_lock_solver/spatial/vec.h"
 #include "../../key_lock_solver/util/hash_combine.h"
+
+namespace key_lock_solver {
 
 constexpr size_t PIECE_COUNT = 9;
 
@@ -29,11 +29,13 @@ struct KeyLockPuzzleState {
   KeyLockPuzzleState() {}
 };
 
+}   // namespace key_lock_solver
+
 namespace std {
 template <>
-struct hash<KeyLockPuzzleState> {
-  size_t operator()(const KeyLockPuzzleState & s) const;
+struct hash<key_lock_solver::KeyLockPuzzleState> {
+  size_t operator()(const key_lock_solver::KeyLockPuzzleState & s) const;
 };
 }  // namespace std
 
-#endif  // KEY_LOCK_SOLVER_SEARCH_KEYLOCKPUZZLESTATE_HPP_
+#endif  // KEY_LOCK_SOLVER_SEARCH_KEYLOCKPUZZLESTATE_H_

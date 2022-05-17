@@ -3,8 +3,6 @@
 //  hash_combine.h
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 13.05.2022.
-//
 
 #ifndef KEY_LOCK_SOLVER_UTIL_HASH_COMBINE_H_
 #define KEY_LOCK_SOLVER_UTIL_HASH_COMBINE_H_

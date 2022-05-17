@@ -1,12 +1,12 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  Step.cpp
+//  Step.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 17.05.2022.
-//
 
-#include "../../key_lock_solver/search/Step.hpp"
+#include "../../key_lock_solver/search/Step.h"
+
+namespace key_lock_solver {
 
 bool Step::hasPieces() const {
   return std::any_of(piece_flags.begin(), piece_flags.end(),
@@ -92,3 +92,5 @@ void Step::printInstruction(std::ostream& out) const {
     out << std::endl;
   }
 }
+
+}   // namespace key_lock_solver

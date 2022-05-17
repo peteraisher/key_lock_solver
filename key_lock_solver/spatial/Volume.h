@@ -1,18 +1,16 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  Volume.hpp
+//  Volume.h
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#ifndef KEY_LOCK_SOLVER_SPATIAL_VOLUME_HPP_
-#define KEY_LOCK_SOLVER_SPATIAL_VOLUME_HPP_
+#ifndef KEY_LOCK_SOLVER_SPATIAL_VOLUME_H_
+#define KEY_LOCK_SOLVER_SPATIAL_VOLUME_H_
 
 #include <unordered_set>
 #include <limits>
-#include "../../key_lock_solver/spatial/vec.hpp"
-#include "../../key_lock_solver/spatial/BoundingBox.hpp"
+#include "../../key_lock_solver/spatial/vec.h"
+#include "../../key_lock_solver/spatial/BoundingBox.h"
 
 
 
@@ -28,4 +26,4 @@ struct Volume {
   Volume(std::initializer_list<char> il);
 };
 
-#endif  // KEY_LOCK_SOLVER_SPATIAL_VOLUME_HPP_
+#endif  // KEY_LOCK_SOLVER_SPATIAL_VOLUME_H_

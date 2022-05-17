@@ -1,17 +1,15 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  BoundingBox.hpp
+//  BoundingBox.h
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#ifndef KEY_LOCK_SOLVER_SPATIAL_BOUNDINGBOX_HPP_
-#define KEY_LOCK_SOLVER_SPATIAL_BOUNDINGBOX_HPP_
+#ifndef KEY_LOCK_SOLVER_SPATIAL_BOUNDINGBOX_H_
+#define KEY_LOCK_SOLVER_SPATIAL_BOUNDINGBOX_H_
 
 #include <algorithm>
 
-#include "../../key_lock_solver/spatial/vec.hpp"
+#include "../../key_lock_solver/spatial/vec.h"
 
 struct BoundingBox {
   bool intersects(const BoundingBox& other, Vec3 offset) const;
@@ -23,4 +21,4 @@ struct BoundingBox {
   Vec3 max {};
 };
 
-#endif  // KEY_LOCK_SOLVER_SPATIAL_BOUNDINGBOX_HPP_
+#endif  // KEY_LOCK_SOLVER_SPATIAL_BOUNDINGBOX_H_

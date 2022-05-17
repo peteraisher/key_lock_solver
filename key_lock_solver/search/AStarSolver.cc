@@ -1,16 +1,16 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  AStarSolver.cpp
+//  AStarSolver.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 13.05.2022.
-//
 
-#include "../../key_lock_solver/search/AStarSolver.hpp"
+#include "../../key_lock_solver/search/AStarSolver.h"
 #include <algorithm>
 #include <iostream>
-#include "../search/a_star.hpp"
-#include "../search/Step.hpp"
+#include "../search/a_star.h"
+#include "../search/Step.h"
+
+namespace key_lock_solver {
 
 const Volume AStarSolver::box = {
   0,0,0, 0,1,0, 0,2,0, 0,3,0, 0,4,0, 0,5,0, 0,6,0,
@@ -343,3 +343,5 @@ void AStarSolver::reset(KeyLockPuzzleState target) {
   std::reverse(totalSolution.begin(), totalSolution.end());
   printSolution(totalSolution, target);
 }
+
+}   // namespace key_lock_solver

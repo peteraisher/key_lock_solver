@@ -1,16 +1,13 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  main.cpp
+//  main.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#include <iostream>
-#include "search/AStarSolver.hpp"
+#include "search/AStarSolver.h"
 
 int main(int argc, const char * argv[]) {
-  auto solver = AStarSolver();
+  auto solver = key_lock_solver::AStarSolver();
   solver.solve();
   return 0;
 }

@@ -1,13 +1,13 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  a_star.cpp
+//  a_star.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#include "../../key_lock_solver/search/a_star.hpp"
-#include "../../key_lock_solver/search/KeyLockPuzzleState.hpp"
+#include "../../key_lock_solver/search/a_star.h"
+#include "../../key_lock_solver/search/KeyLockPuzzleState.h"
+
+namespace key_lock_solver {
 
 template <class T>
 std::vector<T> backtrack(std::shared_ptr<Node<T>> goalNode) {
@@ -88,11 +88,11 @@ std::vector<T> a_star(
   return {};
 }
 
-
-
 template
 std::vector<KeyLockPuzzleState> a_star(
         KeyLockPuzzleState initialState,
         std::function<bool(KeyLockPuzzleState)> goalTestFunc,
         SuccessorFunc<KeyLockPuzzleState> successorFunc,
         std::function<float(KeyLockPuzzleState)> heuristicFunc);
+
+}   // namespace key_lock_solver

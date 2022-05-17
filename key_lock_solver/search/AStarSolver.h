@@ -1,24 +1,21 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  AStarSolver.hpp
+//  AStarSolver.h
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 13.05.2022.
-//
 
-#ifndef KEY_LOCK_SOLVER_SEARCH_ASTARSOLVER_HPP_
-#define KEY_LOCK_SOLVER_SEARCH_ASTARSOLVER_HPP_
+#ifndef KEY_LOCK_SOLVER_SEARCH_ASTARSOLVER_H_
+#define KEY_LOCK_SOLVER_SEARCH_ASTARSOLVER_H_
 
-#include <iostream>
 #include <utility>
 #include <vector>
 #include <array>
-#include "../../key_lock_solver/search/a_star.hpp"
-#include "../../key_lock_solver/search/CollisionCache.hpp"
-#include "../../key_lock_solver/spatial/Volume.hpp"
-#include "../../key_lock_solver/search/KeyLockPuzzleState.hpp"
+#include "../../key_lock_solver/search/a_star.h"
+#include "../../key_lock_solver/search/CollisionCache.h"
+#include "../../key_lock_solver/spatial/Volume.h"
+#include "../../key_lock_solver/search/KeyLockPuzzleState.h"
 
-
+namespace key_lock_solver {
 
 class AStarSolver {
   CollisionCache collisionCache;
@@ -40,4 +37,6 @@ class AStarSolver {
   void reset(KeyLockPuzzleState state = {});
 };
 
-#endif  // KEY_LOCK_SOLVER_SEARCH_ASTARSOLVER_HPP_
+}   // namespace key_lock_solver
+
+#endif  // KEY_LOCK_SOLVER_SEARCH_ASTARSOLVER_H_

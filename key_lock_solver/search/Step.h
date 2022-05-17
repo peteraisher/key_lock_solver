@@ -1,16 +1,16 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  Step.hpp
+//  Step.h
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 17.05.2022.
-//
 
-#ifndef KEY_LOCK_SOLVER_SEARCH_STEP_HPP_
-#define KEY_LOCK_SOLVER_SEARCH_STEP_HPP_
+#ifndef KEY_LOCK_SOLVER_SEARCH_STEP_H_
+#define KEY_LOCK_SOLVER_SEARCH_STEP_H_
 
 #include <iostream>
-#include "../../key_lock_solver/search/KeyLockPuzzleState.hpp"
+#include "../../key_lock_solver/search/KeyLockPuzzleState.h"
+
+namespace key_lock_solver {
 
 struct Step {
   Vec3 diff {};
@@ -31,4 +31,6 @@ struct Step {
   void printCoordinateDirection(std::ostream& out = std::cout) const;
 };
 
-#endif  // KEY_LOCK_SOLVER_SEARCH_STEP_HPP_
+}   // namespace key_lock_solver
+
+#endif  // KEY_LOCK_SOLVER_SEARCH_STEP_H_

@@ -1,15 +1,15 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  CollisionCache.hpp
+//  CollisionCache.h
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 17.05.2022.
-//
 
-#ifndef KEY_LOCK_SOLVER_SEARCH_COLLISIONCACHE_HPP_
-#define KEY_LOCK_SOLVER_SEARCH_COLLISIONCACHE_HPP_
+#ifndef KEY_LOCK_SOLVER_SEARCH_COLLISIONCACHE_H_
+#define KEY_LOCK_SOLVER_SEARCH_COLLISIONCACHE_H_
 
-#include "../../key_lock_solver/spatial/vec.hpp"
+#include "../../key_lock_solver/spatial/vec.h"
+
+namespace key_lock_solver {
 
 class CollisionCache {
  public:
@@ -48,4 +48,6 @@ class CollisionCache {
   void setCacheValue(size_t a, size_t b, Vec3 offset, CacheValue value);
 };
 
-#endif  // KEY_LOCK_SOLVER_SEARCH_COLLISIONCACHE_HPP_
+}   // namespace key_lock_solver
+
+#endif  // KEY_LOCK_SOLVER_SEARCH_COLLISIONCACHE_H_

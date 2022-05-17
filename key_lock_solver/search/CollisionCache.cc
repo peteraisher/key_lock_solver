@@ -1,12 +1,12 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  CollisionCache.cpp
+//  CollisionCache.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 17.05.2022.
-//
 
-#include "../../key_lock_solver/search/CollisionCache.hpp"
+#include "../../key_lock_solver/search/CollisionCache.h"
+
+namespace key_lock_solver {
 
 CollisionCache::Index
 CollisionCache::cacheIndex(size_t pairIndex, Vec3 offset) const {
@@ -42,3 +42,5 @@ CollisionCache::setCacheValue(size_t a, size_t b,
   Index index = cacheIndex(p, offset);
   setValue(index, value);
 }
+
+}   // namespace key_lock_solver

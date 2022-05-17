@@ -8,15 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		81771641282D001D00811E83 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771640282D001D00811E83 /* main.cpp */; };
-		81771649282D04E900811E83 /* vec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771647282D04E900811E83 /* vec.cpp */; };
-		8177164C282D064F00811E83 /* BoundingBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8177164A282D064F00811E83 /* BoundingBox.cpp */; };
-		8177164F282D3AC800811E83 /* Volume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8177164D282D3AC800811E83 /* Volume.cpp */; };
-		81771652282D50D100811E83 /* KeyLockPuzzleState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771650282D50D100811E83 /* KeyLockPuzzleState.cpp */; };
-		81771655282D543C00811E83 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771653282D543C00811E83 /* Node.cpp */; };
-		81771658282D586D00811E83 /* a_star.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771656282D586D00811E83 /* a_star.cpp */; };
-		8177165B282E83D400811E83 /* AStarSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771659282E83D400811E83 /* AStarSolver.cpp */; };
-		8177165F28330DCA00811E83 /* Step.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8177165D28330DCA00811E83 /* Step.cpp */; };
-		81771666283322D000811E83 /* CollisionCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81771664283322D000811E83 /* CollisionCache.cpp */; };
+		81771649282D04E900811E83 /* vec.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771647282D04E900811E83 /* vec.cc */; };
+		8177164C282D064F00811E83 /* BoundingBox.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8177164A282D064F00811E83 /* BoundingBox.cc */; };
+		8177164F282D3AC800811E83 /* Volume.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8177164D282D3AC800811E83 /* Volume.cc */; };
+		81771652282D50D100811E83 /* KeyLockPuzzleState.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771650282D50D100811E83 /* KeyLockPuzzleState.cc */; };
+		81771655282D543C00811E83 /* Node.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771653282D543C00811E83 /* Node.cc */; };
+		81771658282D586D00811E83 /* a_star.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771656282D586D00811E83 /* a_star.cc */; };
+		8177165B282E83D400811E83 /* AStarSolver.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771659282E83D400811E83 /* AStarSolver.cc */; };
+		8177165F28330DCA00811E83 /* Step.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8177165D28330DCA00811E83 /* Step.cc */; };
+		81771666283322D000811E83 /* CollisionCache.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771664283322D000811E83 /* CollisionCache.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,25 +34,25 @@
 /* Begin PBXFileReference section */
 		8177163D282D001D00811E83 /* key_lock_solver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = key_lock_solver; sourceTree = BUILT_PRODUCTS_DIR; };
 		81771640282D001D00811E83 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		81771647282D04E900811E83 /* vec.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vec.cpp; sourceTree = "<group>"; };
-		81771648282D04E900811E83 /* vec.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec.hpp; sourceTree = "<group>"; };
-		8177164A282D064F00811E83 /* BoundingBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BoundingBox.cpp; sourceTree = "<group>"; };
-		8177164B282D064F00811E83 /* BoundingBox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BoundingBox.hpp; sourceTree = "<group>"; };
-		8177164D282D3AC800811E83 /* Volume.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Volume.cpp; sourceTree = "<group>"; };
-		8177164E282D3AC800811E83 /* Volume.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Volume.hpp; sourceTree = "<group>"; };
-		81771650282D50D100811E83 /* KeyLockPuzzleState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyLockPuzzleState.cpp; sourceTree = "<group>"; };
-		81771651282D50D100811E83 /* KeyLockPuzzleState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = KeyLockPuzzleState.hpp; sourceTree = "<group>"; };
-		81771653282D543C00811E83 /* Node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
-		81771654282D543C00811E83 /* Node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Node.hpp; sourceTree = "<group>"; };
-		81771656282D586D00811E83 /* a_star.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = a_star.cpp; sourceTree = "<group>"; };
-		81771657282D586D00811E83 /* a_star.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = a_star.hpp; sourceTree = "<group>"; };
-		81771659282E83D400811E83 /* AStarSolver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AStarSolver.cpp; sourceTree = "<group>"; };
-		8177165A282E83D400811E83 /* AStarSolver.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AStarSolver.hpp; sourceTree = "<group>"; };
+		81771647282D04E900811E83 /* vec.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vec.cc; sourceTree = "<group>"; };
+		81771648282D04E900811E83 /* vec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vec.h; sourceTree = "<group>"; };
+		8177164A282D064F00811E83 /* BoundingBox.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BoundingBox.cc; sourceTree = "<group>"; };
+		8177164B282D064F00811E83 /* BoundingBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoundingBox.h; sourceTree = "<group>"; };
+		8177164D282D3AC800811E83 /* Volume.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Volume.cc; sourceTree = "<group>"; };
+		8177164E282D3AC800811E83 /* Volume.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Volume.h; sourceTree = "<group>"; };
+		81771650282D50D100811E83 /* KeyLockPuzzleState.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyLockPuzzleState.cc; sourceTree = "<group>"; };
+		81771651282D50D100811E83 /* KeyLockPuzzleState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyLockPuzzleState.h; sourceTree = "<group>"; };
+		81771653282D543C00811E83 /* Node.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cc; sourceTree = "<group>"; };
+		81771654282D543C00811E83 /* Node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
+		81771656282D586D00811E83 /* a_star.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = a_star.cc; sourceTree = "<group>"; };
+		81771657282D586D00811E83 /* a_star.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = a_star.h; sourceTree = "<group>"; };
+		81771659282E83D400811E83 /* AStarSolver.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AStarSolver.cc; sourceTree = "<group>"; };
+		8177165A282E83D400811E83 /* AStarSolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AStarSolver.h; sourceTree = "<group>"; };
 		8177165C282F066E00811E83 /* hash_combine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hash_combine.h; sourceTree = "<group>"; };
-		8177165D28330DCA00811E83 /* Step.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Step.cpp; sourceTree = "<group>"; };
-		8177165E28330DCA00811E83 /* Step.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Step.hpp; sourceTree = "<group>"; };
-		81771664283322D000811E83 /* CollisionCache.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionCache.cpp; sourceTree = "<group>"; };
-		81771665283322D000811E83 /* CollisionCache.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CollisionCache.hpp; sourceTree = "<group>"; };
+		8177165D28330DCA00811E83 /* Step.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Step.cc; sourceTree = "<group>"; };
+		8177165E28330DCA00811E83 /* Step.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Step.h; sourceTree = "<group>"; };
+		81771664283322D000811E83 /* CollisionCache.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionCache.cc; sourceTree = "<group>"; };
+		81771665283322D000811E83 /* CollisionCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollisionCache.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,12 +96,12 @@
 		817716612833116D00811E83 /* spatial */ = {
 			isa = PBXGroup;
 			children = (
-				81771648282D04E900811E83 /* vec.hpp */,
-				81771647282D04E900811E83 /* vec.cpp */,
-				8177164E282D3AC800811E83 /* Volume.hpp */,
-				8177164D282D3AC800811E83 /* Volume.cpp */,
-				8177164B282D064F00811E83 /* BoundingBox.hpp */,
-				8177164A282D064F00811E83 /* BoundingBox.cpp */,
+				81771648282D04E900811E83 /* vec.h */,
+				81771647282D04E900811E83 /* vec.cc */,
+				8177164E282D3AC800811E83 /* Volume.h */,
+				8177164D282D3AC800811E83 /* Volume.cc */,
+				8177164B282D064F00811E83 /* BoundingBox.h */,
+				8177164A282D064F00811E83 /* BoundingBox.cc */,
 			);
 			path = spatial;
 			sourceTree = "<group>";
@@ -109,18 +109,18 @@
 		817716622833118B00811E83 /* search */ = {
 			isa = PBXGroup;
 			children = (
-				81771665283322D000811E83 /* CollisionCache.hpp */,
-				81771664283322D000811E83 /* CollisionCache.cpp */,
-				8177165A282E83D400811E83 /* AStarSolver.hpp */,
-				81771659282E83D400811E83 /* AStarSolver.cpp */,
-				8177165E28330DCA00811E83 /* Step.hpp */,
-				8177165D28330DCA00811E83 /* Step.cpp */,
-				81771657282D586D00811E83 /* a_star.hpp */,
-				81771656282D586D00811E83 /* a_star.cpp */,
-				81771654282D543C00811E83 /* Node.hpp */,
-				81771653282D543C00811E83 /* Node.cpp */,
-				81771651282D50D100811E83 /* KeyLockPuzzleState.hpp */,
-				81771650282D50D100811E83 /* KeyLockPuzzleState.cpp */,
+				81771665283322D000811E83 /* CollisionCache.h */,
+				81771664283322D000811E83 /* CollisionCache.cc */,
+				8177165A282E83D400811E83 /* AStarSolver.h */,
+				81771659282E83D400811E83 /* AStarSolver.cc */,
+				8177165E28330DCA00811E83 /* Step.h */,
+				8177165D28330DCA00811E83 /* Step.cc */,
+				81771657282D586D00811E83 /* a_star.h */,
+				81771656282D586D00811E83 /* a_star.cc */,
+				81771654282D543C00811E83 /* Node.h */,
+				81771653282D543C00811E83 /* Node.cc */,
+				81771651282D50D100811E83 /* KeyLockPuzzleState.h */,
+				81771650282D50D100811E83 /* KeyLockPuzzleState.cc */,
 			);
 			path = search;
 			sourceTree = "<group>";
@@ -161,7 +161,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1340;
 				TargetAttributes = {
 					8177163C282D001D00811E83 = {
 						CreatedOnToolsVersion = 13.3.1;
@@ -211,16 +211,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8177165F28330DCA00811E83 /* Step.cpp in Sources */,
-				81771666283322D000811E83 /* CollisionCache.cpp in Sources */,
-				81771658282D586D00811E83 /* a_star.cpp in Sources */,
-				81771652282D50D100811E83 /* KeyLockPuzzleState.cpp in Sources */,
-				8177164C282D064F00811E83 /* BoundingBox.cpp in Sources */,
-				81771649282D04E900811E83 /* vec.cpp in Sources */,
-				81771655282D543C00811E83 /* Node.cpp in Sources */,
+				8177165F28330DCA00811E83 /* Step.cc in Sources */,
+				81771666283322D000811E83 /* CollisionCache.cc in Sources */,
+				81771658282D586D00811E83 /* a_star.cc in Sources */,
+				81771652282D50D100811E83 /* KeyLockPuzzleState.cc in Sources */,
+				8177164C282D064F00811E83 /* BoundingBox.cc in Sources */,
+				81771649282D04E900811E83 /* vec.cc in Sources */,
+				81771655282D543C00811E83 /* Node.cc in Sources */,
 				81771641282D001D00811E83 /* main.cpp in Sources */,
-				8177165B282E83D400811E83 /* AStarSolver.cpp in Sources */,
-				8177164F282D3AC800811E83 /* Volume.cpp in Sources */,
+				8177165B282E83D400811E83 /* AStarSolver.cc in Sources */,
+				8177164F282D3AC800811E83 /* Volume.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +339,7 @@
 		81771645282D001D00811E83 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TWJK35QCXR;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -349,6 +350,7 @@
 		81771646282D001D00811E83 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TWJK35QCXR;
 				ENABLE_HARDENED_RUNTIME = YES;

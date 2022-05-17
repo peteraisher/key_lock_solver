@@ -1,17 +1,17 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  Node.hpp
+//  Node.h
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#ifndef KEY_LOCK_SOLVER_SEARCH_NODE_HPP_
-#define KEY_LOCK_SOLVER_SEARCH_NODE_HPP_
+#ifndef KEY_LOCK_SOLVER_SEARCH_NODE_H_
+#define KEY_LOCK_SOLVER_SEARCH_NODE_H_
 
 #include <functional>
 #include <memory>
 #include "../../key_lock_solver/util/hash_combine.h"
+
+namespace key_lock_solver {
 
 template <class T>
 struct Node {
@@ -31,5 +31,6 @@ struct Node {
 };
 
 
+}   // namespace key_lock_solver
 
-#endif  // KEY_LOCK_SOLVER_SEARCH_NODE_HPP_
+#endif  // KEY_LOCK_SOLVER_SEARCH_NODE_H_

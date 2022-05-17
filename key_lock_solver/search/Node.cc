@@ -1,12 +1,12 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  Node.cpp
+//  Node.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#include "../../key_lock_solver/search/Node.hpp"
+#include "../../key_lock_solver/search/Node.h"
+
+namespace key_lock_solver {
 
 template <class T>
 bool Node<T>::operator==(const Node<T> &other) const {
@@ -15,3 +15,5 @@ bool Node<T>::operator==(const Node<T> &other) const {
     && cost == other.cost
     && heuristic == other.heuristic;
 }
+
+}   // namespace key_lock_solver

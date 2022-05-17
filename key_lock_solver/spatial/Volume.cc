@@ -1,12 +1,10 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  Volume.cpp
+//  Volume.cc
 //  key_lock_solver
 //
-//  Created by Peter Aisher on 12.05.2022.
-//
 
-#include "../../key_lock_solver/spatial/Volume.hpp"
+#include "../../key_lock_solver/spatial/Volume.h"
 
 bool Volume::pointsIntersect(const Volume& other, Vec3 offset) const {
   return std::any_of(points.begin(), points.end(), [&](const auto& p) {
