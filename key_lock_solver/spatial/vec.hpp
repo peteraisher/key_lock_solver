@@ -9,27 +9,18 @@
 #ifndef KEY_LOCK_SOLVER_SPATIAL_VEC_HPP_
 #define KEY_LOCK_SOLVER_SPATIAL_VEC_HPP_
 
-#include <immintrin.h>
+#include <simd/simd.h>
 #include <limits>
 #include <functional>
 
-#if 0
-typedef __attribute__((__ext_vector_type__(3))) char Vec3;
-#else
-#include <simd/simd.h>
 typedef simd_char3 Vec3;
 
 namespace std {
 template <> struct hash<Vec3> {
-  size_t operator()(const Vec3 & x) const {
-    union { uint32_t i; Vec3 v; } u = { .v = x };
-    return hash<uint32_t>()(u.i);
-  }
+  size_t operator()(const Vec3 & x) const;
 };
 template <> struct equal_to<Vec3> {
-  size_t operator()(const Vec3& a, const Vec3& b) const {
-    return simd_equal(a, b);
-  }
+  bool operator()(const Vec3& a, const Vec3& b) const;
 };
 
 template <> struct numeric_limits<Vec3> {
@@ -43,7 +34,5 @@ template <> struct numeric_limits<Vec3> {
   }
 };
 }   // namespace std
-
-#endif
 
 #endif  // KEY_LOCK_SOLVER_SPATIAL_VEC_HPP_
