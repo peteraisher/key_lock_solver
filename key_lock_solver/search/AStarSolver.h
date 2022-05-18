@@ -35,8 +35,12 @@ class AStarSolver {
   possibleMoves(KeyLockPuzzleState state);
 
  public:
+  /// Solve the puzzle to remove all pieces
+  /// @param state the starting state to solve from (optional).
   void solve(KeyLockPuzzleState state = {});
-  void reset(KeyLockPuzzleState state = {});
+  /// Reset the puzzle to reinsert all pieces
+  /// @param state the starting state to solve from (optional).
+  void reset(KeyLockPuzzleState state = KeyLockPuzzleState::solved());
 };
 
 }   // namespace key_lock_solver

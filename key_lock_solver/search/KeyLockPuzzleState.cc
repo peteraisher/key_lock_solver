@@ -32,6 +32,15 @@ bool KeyLockPuzzleState::operator==(const KeyLockPuzzleState& other) const {
   }
   return true;
 }
+
+KeyLockPuzzleState KeyLockPuzzleState::solved() {
+  KeyLockPuzzleState result {};
+  for (auto& vec : result.positions) {
+    vec = std::numeric_limits<Vec3>::max();
+  }
+  return result;
+}
+
 }   // namespace key_lock_solver
 
 namespace std {

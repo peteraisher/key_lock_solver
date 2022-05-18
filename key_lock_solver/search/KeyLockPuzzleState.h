@@ -24,9 +24,14 @@ struct KeyLockPuzzleState {
   }
   size_t removedCount() const;
   bool operator==(const KeyLockPuzzleState& other) const;
+
+  /// KeyLockPuzzleState
+  /// @param positions an array of vectors describing the offsets of the
+  /// movable pieces from their original positions.
   explicit KeyLockPuzzleState(std::array<Vec3, PIECE_COUNT> positions)
     : positions(positions) {}
   KeyLockPuzzleState() {}
+  static KeyLockPuzzleState solved();
 };
 
 }   // namespace key_lock_solver
