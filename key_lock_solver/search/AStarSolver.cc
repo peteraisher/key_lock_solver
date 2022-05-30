@@ -104,7 +104,7 @@ const std::array<Volume, PIECE_COUNT> AStarSolver::movablePieces = {
 };
 
 size_t AStarSolver::cascadeMove(size_t index, Vec3 move,
-                                KeyLockPuzzleState* state,
+                                State* state,
                                 std::array<bool, PIECE_COUNT>* moved) {
   const auto startPos = state->positions[index];
   const auto newPos = startPos + move;
@@ -132,7 +132,7 @@ size_t AStarSolver::cascadeMove(size_t index, Vec3 move,
 
 bool AStarSolver::boxCollision(size_t index, Vec3 offset) {
   CollisionCache::CacheValue cv = collisionCache.boxCacheValue(index, offset);
-  if (cv) {
+  if (cv != impl::CollisionCache::NotStored) {
     return cv == impl::CollisionCache::Collision;
   }
   bool result = movablePieces[index].pointsIntersect(box, offset);
@@ -162,7 +162,7 @@ bool AStarSolver::haveCollision(size_t firstIndex, size_t secondIndex,
   }
   CollisionCache::CacheValue cv =
     collisionCache.cacheValue(firstIndex,secondIndex, offset);
-  if (cv) {
+  if (cv != impl::CollisionCache::NotStored) {
     return cv == CollisionCache::Collision;
   }
   auto result = firstBody.pointsIntersect(secondBody, offset);
@@ -171,7 +171,7 @@ bool AStarSolver::haveCollision(size_t firstIndex, size_t secondIndex,
   return result;
 }
 
-static inline float searchHeuristic(KeyLockPuzzleState state) {
+static inline float searchHeuristic(State state) {
   int result = 0;
   size_t i = 0;
   for (; i < 4; ++i) {
@@ -184,8 +184,8 @@ static inline float searchHeuristic(KeyLockPuzzleState state) {
   return static_cast<float>(result);
 }
 
-static inline float resetHeuristic(KeyLockPuzzleState state,
-                                   KeyLockPuzzleState target) {
+static inline float resetHeuristic(State state,
+                                   State target) {
   int result = 0;
   size_t i = 0;
   for (; i < 4; ++i) {
@@ -233,9 +233,9 @@ static void removeEmptySteps(std::vector<Step>* steps) {
   steps->resize(writeStep - steps->begin());
 }
 
-static void printSolution(std::vector<KeyLockPuzzleState> solution,
-                   KeyLockPuzzleState start, std::ostream& out = std::cout) {
-  KeyLockPuzzleState lastState = start;
+static void printSolution(std::vector<State> solution,
+                   State start, std::ostream& out = std::cout) {
+  State lastState = start;
 
 
   std::vector<Step> steps {};
@@ -256,9 +256,9 @@ static void printSolution(std::vector<KeyLockPuzzleState> solution,
   }
 }
 
-std::vector<std::pair<KeyLockPuzzleState, float>>
-AStarSolver::possibleMoves(KeyLockPuzzleState state) {
-  std::vector<std::pair<KeyLockPuzzleState, float>> result {};
+std::vector<std::pair<State, float>>
+AStarSolver::possibleMoves(State state) {
+  std::vector<std::pair<State, float>> result {};
   result.reserve(48);
   std::array<Vec3, 6> moves = {
     Vec3{1, 0, 0}, {-1, 0, 0},
@@ -292,16 +292,16 @@ AStarSolver::possibleMoves(KeyLockPuzzleState state) {
   return result;
 }
 
-void AStarSolver::solve(KeyLockPuzzleState state) {
-  KeyLockPuzzleState lastSolveState = state;
-  std::vector<KeyLockPuzzleState> totalSolution = {state};
+void AStarSolver::solve(State state) {
+  State lastSolveState = state;
+  std::vector<State> totalSolution = {state};
 
   for (size_t i = 0; i < 9; ++i) {
-    std::vector<KeyLockPuzzleState> solution =
-    a_star<KeyLockPuzzleState>(
+    std::vector<State> solution =
+    a_star<State>(
       lastSolveState,
-      [&i](KeyLockPuzzleState s){return s.removedCount() > i;},
-      [&](KeyLockPuzzleState s){return possibleMoves(s);}, searchHeuristic);
+      [&i](State s){return s.removedCount() > i;},
+      [&](State s){return possibleMoves(s);}, searchHeuristic);
     if (solution.empty()) {
       auto rc = lastSolveState.removedCount();
       std::cout << "Failed to find solution on step " << i + 1 << std::endl;
@@ -316,23 +316,23 @@ void AStarSolver::solve(KeyLockPuzzleState state) {
   printSolution(totalSolution, state);
 }
 
-void AStarSolver::reset(KeyLockPuzzleState target) {
-  KeyLockPuzzleState state {};
-  KeyLockPuzzleState lastSolveState = state;
-  std::vector<KeyLockPuzzleState> totalSolution = {state};
+void AStarSolver::reset(State target) {
+  State state {};
+  State lastSolveState = state;
+  std::vector<State> totalSolution = {state};
   for (size_t i = 0; i <= target.removedCount(); ++i) {
-    std::vector<KeyLockPuzzleState> solution =
-    a_star<KeyLockPuzzleState>(
+    std::vector<State> solution =
+    a_star<State>(
       lastSolveState,
-      [&](KeyLockPuzzleState s){
+      [&](State s){
         if (s.removedCount() < i) { return false;}
         for (size_t j = 0; j < PIECE_COUNT; ++j) {
           if (s.isRemovedPiece(j) && !target.isRemovedPiece(j)) {return false;}
         }
         return s.removedCount() > i || s == target;
       },
-      [&](KeyLockPuzzleState s){return possibleMoves(s);},
-      [&](KeyLockPuzzleState s){return resetHeuristic(s, target);});
+      [&](State s){return possibleMoves(s);},
+      [&](State s){return resetHeuristic(s, target);});
     if (solution.empty()) {
       auto rc = lastSolveState.removedCount();
       std::cout << "Failed to find solution on step " << i + 1 << std::endl;

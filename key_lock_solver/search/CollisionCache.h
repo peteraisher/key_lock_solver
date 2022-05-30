@@ -15,10 +15,11 @@ namespace impl {
 class CollisionCache {
  public:
   enum CacheValue : size_t {
-    NotStored   = 0,
-    Stored      = 1,
-    NoCollision = 2,
-    Collision   = 3
+    CollisionFlag = 1 << 0,
+    StoredFlag    = 1 << 1,
+    NotStored     = 0,
+    NoCollision   = StoredFlag,
+    Collision     = StoredFlag | CollisionFlag
   };
 
  private:

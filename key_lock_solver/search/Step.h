@@ -8,7 +8,7 @@
 #define KEY_LOCK_SOLVER_SEARCH_STEP_H_
 
 #include <iostream>
-#include "../../key_lock_solver/search/KeyLockPuzzleState.h"
+#include "../../key_lock_solver/search/State.h"
 
 namespace key_lock_solver {
 namespace impl {
@@ -18,7 +18,7 @@ struct Step {
   inline operator bool() const { return hasMove() || hasPieces();}
   bool operator==(const Step& other) const;
   inline Step() {}
-  Step(const KeyLockPuzzleState& prev, const KeyLockPuzzleState& curr);
+  Step(const State& prev, const State& curr);
   void printInstruction(std::ostream& out = std::cout) const;
   void removeCommonPieces(Step* other);
 

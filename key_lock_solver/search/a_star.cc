@@ -5,7 +5,7 @@
 //
 
 #include "../../key_lock_solver/search/a_star.h"
-#include "../../key_lock_solver/search/KeyLockPuzzleState.h"
+#include "../../key_lock_solver/search/State.h"
 
 namespace key_lock_solver {
 namespace impl {
@@ -90,11 +90,11 @@ std::vector<T> a_star(
 }
 
 template
-std::vector<KeyLockPuzzleState> a_star(
-        KeyLockPuzzleState initialState,
-        std::function<bool(KeyLockPuzzleState)> goalTestFunc,
-        SuccessorFunc<KeyLockPuzzleState> successorFunc,
-        std::function<float(KeyLockPuzzleState)> heuristicFunc);
+std::vector<State> a_star(
+        State initialState,
+        std::function<bool(State)> goalTestFunc,
+        SuccessorFunc<State> successorFunc,
+        std::function<float(State)> heuristicFunc);
 
 }   // namespace impl
 }   // namespace key_lock_solver

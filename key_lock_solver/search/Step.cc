@@ -33,7 +33,7 @@ bool Step::operator==(const Step& other) const {
   return true;
 }
 
-Step::Step(const KeyLockPuzzleState& prev, const KeyLockPuzzleState& curr) {
+Step::Step(const State& prev, const State& curr) {
   for (size_t i = 0; i < PIECE_COUNT; ++i) {
     if (!simd_equal(prev.positions[i], curr.positions[i])) {
       if (!prev.isRemovedPiece(i) && !curr.isRemovedPiece(i)) {

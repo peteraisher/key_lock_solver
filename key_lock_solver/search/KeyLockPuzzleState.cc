@@ -1,14 +1,14 @@
 //  Copyright (c) 2022 Peter Aisher
 //
-//  KeyLockPuzzleState.cc
+//  State.cc
 //  key_lock_solver
 //
 
-#include "../../key_lock_solver/search/KeyLockPuzzleState.h"
+#include "../../key_lock_solver/search/State.h"
 
 namespace key_lock_solver {
 
-bool KeyLockPuzzleState::canRemovePiece(size_t index) const {
+bool State::canRemovePiece(size_t index) const {
   switch (index >> 2) {
     case 0: return abs(positions[index].x) >= 7;
     case 1: return abs(positions[index].y) >= 7;
@@ -18,7 +18,7 @@ bool KeyLockPuzzleState::canRemovePiece(size_t index) const {
   }
 }
 
-size_t KeyLockPuzzleState::removedCount() const {
+size_t State::removedCount() const {
   size_t tot = 0;
   for (size_t i = 0; i < PIECE_COUNT; ++i) {
     if (isRemovedPiece(i)) { ++tot; }
@@ -26,15 +26,15 @@ size_t KeyLockPuzzleState::removedCount() const {
   return tot;
 }
 
-bool KeyLockPuzzleState::operator==(const KeyLockPuzzleState& other) const {
+bool State::operator==(const State& other) const {
   for (size_t i = 0; i < PIECE_COUNT; ++i) {
     if (!simd_equal(positions[i], other.positions[i])) {return false;}
   }
   return true;
 }
 
-KeyLockPuzzleState KeyLockPuzzleState::solved() {
-  KeyLockPuzzleState result {};
+State State::solved() {
+  State result {};
   for (auto& vec : result.positions) {
     vec = std::numeric_limits<Vec3>::max();
   }
@@ -44,8 +44,8 @@ KeyLockPuzzleState KeyLockPuzzleState::solved() {
 }   // namespace key_lock_solver
 
 namespace std {
-size_t hash<key_lock_solver::KeyLockPuzzleState>::operator()
-(const key_lock_solver::KeyLockPuzzleState& s) const {
+size_t hash<key_lock_solver::State>::operator()
+(const key_lock_solver::State& s) const {
   using key_lock_solver::impl::hash_combine;
   size_t seed = std::hash<key_lock_solver::Vec3>()(s.positions[0]);
   hash_combine(&seed, s.positions[1]);

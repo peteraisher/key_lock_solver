@@ -41,7 +41,7 @@
 		8177164D282D3AC800811E83 /* Volume.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Volume.cc; sourceTree = "<group>"; };
 		8177164E282D3AC800811E83 /* Volume.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Volume.h; sourceTree = "<group>"; };
 		81771650282D50D100811E83 /* KeyLockPuzzleState.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyLockPuzzleState.cc; sourceTree = "<group>"; };
-		81771651282D50D100811E83 /* KeyLockPuzzleState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyLockPuzzleState.h; sourceTree = "<group>"; };
+		81771651282D50D100811E83 /* State.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
 		81771653282D543C00811E83 /* Node.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cc; sourceTree = "<group>"; };
 		81771654282D543C00811E83 /* Node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		81771656282D586D00811E83 /* a_star.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = a_star.cc; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 				81771656282D586D00811E83 /* a_star.cc */,
 				81771654282D543C00811E83 /* Node.h */,
 				81771653282D543C00811E83 /* Node.cc */,
-				81771651282D50D100811E83 /* KeyLockPuzzleState.h */,
+				81771651282D50D100811E83 /* State.h */,
 				81771650282D50D100811E83 /* KeyLockPuzzleState.cc */,
 			);
 			path = search;
