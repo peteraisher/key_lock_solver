@@ -35,9 +35,9 @@ bool Step::operator==(const Step& other) const {
 
 Step::Step(const State& prev, const State& curr) {
   for (size_t i = 0; i < PIECE_COUNT; ++i) {
-    if (!simd_equal(prev.positions[i], curr.positions[i])) {
+    if (!simd_equal(prev.getPosition(i), curr.getPosition(i))) {
       if (!prev.isRemovedPiece(i) && !curr.isRemovedPiece(i)) {
-        diff = curr.positions[i] - prev.positions[i];
+        diff = curr.getPosition(i) - prev.getPosition(i);
       }
       setFlag(i);
     }

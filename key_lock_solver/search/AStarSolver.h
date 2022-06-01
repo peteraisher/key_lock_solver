@@ -26,6 +26,12 @@ class AStarSolver {
 
   static const std::array<Volume, PIECE_COUNT> movablePieces;
 
+  /// Cascade a piece move to all pieces which would collide
+  /// @param index the index of the piece to move.
+  /// @param move the move to make.
+  /// @param state a pointer to the current state. Modified by this method.
+  /// @param moved whether each piece has been moved. Modified by this method
+  /// @return the number of pieces moved in total, or zero on collision.
   size_t cascadeMove(size_t index, Vec3 move, State* state,
                      std::array<bool, PIECE_COUNT>* moved);
   bool boxCollision(size_t index, Vec3 offset);

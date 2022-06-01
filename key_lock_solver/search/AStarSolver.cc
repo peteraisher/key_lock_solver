@@ -94,7 +94,7 @@ const std::array<Volume, PIECE_COUNT> AStarSolver::movablePieces = {
   {   // H
     1,0,1, 1,0,2, 1,0,3, 1,6,1, 1,6,2, 1,6,3,
     2,0,1, 2,0,2, 2,0,3, 2,1,1, 2,2,1, 2,3,1,
-    2,4,1, 2,5,1, 2,5,3, 2,6,1, 2,6,2, 2,6,3,
+    2,4,1, 2,5,1, 2,5,3, 2,6,1, 2,6,2, 2,6,3
   },
   {   // K
     3,2,0, 3,2,4, 3,2,5, 3,2,6, 3,2,10, 3,2,11, 3,2,12, 3,3,0, 3,3,2, 3,3,3,
@@ -106,25 +106,27 @@ const std::array<Volume, PIECE_COUNT> AStarSolver::movablePieces = {
 size_t AStarSolver::cascadeMove(size_t index, Vec3 move,
                                 State* state,
                                 std::array<bool, PIECE_COUNT>* moved) {
-  const auto startPos = state->positions[index];
+  const auto startPos = state->getPosition(index);
   const auto newPos = startPos + move;
   if (boxCollision(index, newPos)) {
     return 0;
   }
-  state->positions[index] = newPos;
+  state->movePosition(index, move);
   (*moved)[index] = true;
 
   size_t tot = 0;
   for (size_t i = 0; i < PIECE_COUNT; ++i) {
-    if (index != i && !state->isRemovedPiece(i)
-        && haveCollision(index, i, newPos, state->positions[i])) {
-      if ((*moved)[i]) { return 0; }
-      size_t res = cascadeMove(i, move, state, moved);
-      if (res) {
-        tot += res;
-      } else {
-        return 0;
-      }
+    if (index == i
+        || state->isRemovedPiece(i)
+        || !haveCollision(index, i, newPos, state->getPosition(i))) {
+      continue;
+    }
+    if ((*moved)[i]) { return 0; }
+    size_t res = cascadeMove(i, move, state, moved);
+    if (res) {
+      tot += res;
+    } else {
+      return 0;
     }
   }
   return tot + 1;
@@ -175,12 +177,16 @@ static inline float searchHeuristic(State state) {
   int result = 0;
   size_t i = 0;
   for (; i < 4; ++i) {
-    result += std::max(8 - abs(state.positions[i].x), 0);
+    if (state.isRemovedPiece(i)) {continue;}
+    result += std::max(8 - abs(state.getPosition(i).x), 0);
   }
   for (; i < 8; ++i) {
-    result += std::max(8 - abs(state.positions[i].y), 0);
+    if (state.isRemovedPiece(i)) {continue;}
+    result += std::max(8 - abs(state.getPosition(i).y), 0);
   }
-  result += std::max(8 - abs(state.positions[i].z), 0);
+  if (!state.isRemovedPiece(i)) {
+    result += std::max(8 - abs(state.getPosition(i).z), 0);
+  }
   return static_cast<float>(result);
 }
 
@@ -189,12 +195,12 @@ static inline float resetHeuristic(State state,
   int result = 0;
   size_t i = 0;
   for (; i < 4; ++i) {
-    result += abs(state.positions[i].x - target.positions[i].x);
+    result += abs(state.getPosition(i).x - target.getPosition(i).x);
   }
   for (; i < 8; ++i) {
-    result += abs(state.positions[i].y - target.positions[i].y);
+    result += abs(state.getPosition(i).y - target.getPosition(i).y);
   }
-  result += abs(state.positions[i].z - target.positions[i].z);
+  result += abs(state.getPosition(i).z - target.getPosition(i).z);
   return static_cast<float>(result);
 }
 
@@ -265,23 +271,37 @@ AStarSolver::possibleMoves(State state) {
     {0, 1, 0}, {0, -1, 0},
     {0, 0, 1}, {0, 0, -1}
   };
-  auto newPositions = state.positions;
-  for (size_t i = 0; i < state.positions.size(); ++i) {
+
+//  bool removed = false;
+//  for (size_t i = 0; i < PIECE_COUNT; ++i) {
+//    if (!state.isRemovedPiece(i) && state.canRemovePiece(i)) {
+//      state.removePiece(i);
+//      removed = true;
+//    }
+//  }
+//  if (removed) {
+//    result.emplace_back(state, 0.f);
+//  }
+
+  for (size_t i = 0; i < PIECE_COUNT; ++i) {
     if (state.isRemovedPiece(i)) {
       continue;
     }
 
     if (state.canRemovePiece(i)) {
-      newPositions[i] = std::numeric_limits<Vec3>::max();
-      result.emplace_back(newPositions, 0.f);
-      newPositions[i] = state.positions[i];
+      auto newState = state;
+      newState.removePiece(i);
+      result.emplace_back(newState, 0.f);
+//      state.removePiece(i);
       continue;
     }
+    printf("checking moves for piece %zu\n", i);
     for (const auto& move : moves) {
       auto stateCopy = state;
       std::array<bool, PIECE_COUNT> moved {};
       size_t res = cascadeMove(i, move, &stateCopy, &moved);
       if (res) {
+        printf("  (%i, %i, %i)\n", move.x, move.y, move.z);
         float cost = static_cast<float>(res);
 //        cost = 1.f + ((cost - 1.f) * 0.875f);
         cost = sqrtf(cost);
