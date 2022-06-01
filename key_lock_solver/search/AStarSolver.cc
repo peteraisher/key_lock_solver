@@ -272,17 +272,6 @@ AStarSolver::possibleMoves(State state) {
     {0, 0, 1}, {0, 0, -1}
   };
 
-//  bool removed = false;
-//  for (size_t i = 0; i < PIECE_COUNT; ++i) {
-//    if (!state.isRemovedPiece(i) && state.canRemovePiece(i)) {
-//      state.removePiece(i);
-//      removed = true;
-//    }
-//  }
-//  if (removed) {
-//    result.emplace_back(state, 0.f);
-//  }
-
   for (size_t i = 0; i < PIECE_COUNT; ++i) {
     if (state.isRemovedPiece(i)) {
       continue;
@@ -292,18 +281,14 @@ AStarSolver::possibleMoves(State state) {
       auto newState = state;
       newState.removePiece(i);
       result.emplace_back(newState, 0.f);
-//      state.removePiece(i);
       continue;
     }
-    printf("checking moves for piece %zu\n", i);
     for (const auto& move : moves) {
       auto stateCopy = state;
       std::array<bool, PIECE_COUNT> moved {};
       size_t res = cascadeMove(i, move, &stateCopy, &moved);
       if (res) {
-        printf("  (%i, %i, %i)\n", move.x, move.y, move.z);
         float cost = static_cast<float>(res);
-//        cost = 1.f + ((cost - 1.f) * 0.875f);
         cost = sqrtf(cost);
         result.push_back({stateCopy, cost});
       }

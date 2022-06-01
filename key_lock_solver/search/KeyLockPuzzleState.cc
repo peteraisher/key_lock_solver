@@ -37,34 +37,10 @@ static inline size_t bitIndexForPieceVector(size_t i) {
 
 namespace key_lock_solver {
 
-
-static inline void validate(const State& s) {
-  size_t enc = s.storage[0];
-  for (size_t i = 0; i < 15; ++i) {
-    assert(enc & 0xf);
-    enc >>= 4;
-  }
-  enc = s.storage[1];
-  for (size_t i = 0; i < 12; ++i) {
-    assert(enc & 0xf);
-    enc >>= 4;
-  }
-}
-
 bool State::canRemovePiece(size_t index) const {
-  Vec3 pos = getPosition(index);
-  return abs(pos.x) >= 7 || abs(pos.y) >= 7 || abs(pos.z) >= 7;
-  switch (index >> 2) {
-    case 0: return abs(pos.x) >= 7;
-    case 1: return abs(pos.y) >= 7;
-    case 2: return abs(pos.z) >= 7;
-    default:
-      assert(0);
-  }
   size_t enc = encodedBitsForPiece(index);
   enc >>= (index & ~0x3);
   enc &= 0xf;
-  validate(*this);
   return enc == 1 || enc == 0xf;
 }
 
@@ -81,30 +57,15 @@ void State::movePosition(size_t i, Vec3 diff) {
     s = diff.y;
     componentOffset = 4;
   } else {
-    assert(diff.z);
     s = diff.z;
     componentOffset = 8;
   }
   size_t change = 1ULL << (bitIndexForPieceVector(i) + componentOffset);
   if (s == 1) {
-    switch (componentOffset >> 2) {
-      case 0: assert(getPosition(i).x != 7); break;
-      case 1: assert(getPosition(i).y != 7); break;
-      case 2: assert(getPosition(i).z != 7); break;
-      default: break;
-    }
     storage[storageIndexForPiece(i)] += change;
   } else {
-    assert(s == -1);
-    switch (componentOffset >> 2) {
-      case 0: assert(getPosition(i).x != -7); break;
-      case 1: assert(getPosition(i).y != -7); break;
-      case 2: assert(getPosition(i).z != -7); break;
-      default: break;
-    }
     storage[storageIndexForPiece(i)] -= change;
   }
-  validate(*this);
 }
 
 size_t State::encodedBitsForPiece(size_t i) const {
@@ -118,12 +79,10 @@ Vec3 State::getPosition(size_t i) const {
   result.x = halfCharExpand(enc         & 0xf);
   result.y = halfCharExpand((enc >> 4)  & 0xf);
   result.z = halfCharExpand((enc >> 8)  & 0xf);
-  validate(*this);
   return result;
 }
 
 bool State::isRemovedPiece(size_t index) const {
-  validate(*this);
   return (storage[1] >> (index + kSlotTwoOffset)) & 1;
 }
 
@@ -132,7 +91,6 @@ size_t State::removedCount() const {
   for (size_t i = 0; i < PIECE_COUNT; ++i) {
     if (isRemovedPiece(i)) { ++tot; }
   }
-  validate(*this);
   return tot;
 }
 
@@ -143,7 +101,6 @@ bool State::operator==(const State& other) const {
 State State::solved() {
   State result {};
   result.storage[1] = 0x1ffULL << kSlotTwoOffset;
-  validate(result);
   return result;
 }
 
