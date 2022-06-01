@@ -11,7 +11,7 @@
 		81771649282D04E900811E83 /* vec.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771647282D04E900811E83 /* vec.cc */; };
 		8177164C282D064F00811E83 /* BoundingBox.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8177164A282D064F00811E83 /* BoundingBox.cc */; };
 		8177164F282D3AC800811E83 /* Volume.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8177164D282D3AC800811E83 /* Volume.cc */; };
-		81771652282D50D100811E83 /* KeyLockPuzzleState.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771650282D50D100811E83 /* KeyLockPuzzleState.cc */; };
+		81771652282D50D100811E83 /* State.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771650282D50D100811E83 /* State.cc */; };
 		81771655282D543C00811E83 /* Node.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771653282D543C00811E83 /* Node.cc */; };
 		81771658282D586D00811E83 /* a_star.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771656282D586D00811E83 /* a_star.cc */; };
 		8177165B282E83D400811E83 /* AStarSolver.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771659282E83D400811E83 /* AStarSolver.cc */; };
@@ -40,7 +40,7 @@
 		8177164B282D064F00811E83 /* BoundingBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoundingBox.h; sourceTree = "<group>"; };
 		8177164D282D3AC800811E83 /* Volume.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Volume.cc; sourceTree = "<group>"; };
 		8177164E282D3AC800811E83 /* Volume.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Volume.h; sourceTree = "<group>"; };
-		81771650282D50D100811E83 /* KeyLockPuzzleState.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyLockPuzzleState.cc; sourceTree = "<group>"; };
+		81771650282D50D100811E83 /* State.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = State.cc; sourceTree = "<group>"; };
 		81771651282D50D100811E83 /* State.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
 		81771653282D543C00811E83 /* Node.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cc; sourceTree = "<group>"; };
 		81771654282D543C00811E83 /* Node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 				81771654282D543C00811E83 /* Node.h */,
 				81771653282D543C00811E83 /* Node.cc */,
 				81771651282D50D100811E83 /* State.h */,
-				81771650282D50D100811E83 /* KeyLockPuzzleState.cc */,
+				81771650282D50D100811E83 /* State.cc */,
 			);
 			path = search;
 			sourceTree = "<group>";
@@ -214,7 +214,7 @@
 				8177165F28330DCA00811E83 /* Step.cc in Sources */,
 				81771666283322D000811E83 /* CollisionCache.cc in Sources */,
 				81771658282D586D00811E83 /* a_star.cc in Sources */,
-				81771652282D50D100811E83 /* KeyLockPuzzleState.cc in Sources */,
+				81771652282D50D100811E83 /* State.cc in Sources */,
 				8177164C282D064F00811E83 /* BoundingBox.cc in Sources */,
 				81771649282D04E900811E83 /* vec.cc in Sources */,
 				81771655282D543C00811E83 /* Node.cc in Sources */,
