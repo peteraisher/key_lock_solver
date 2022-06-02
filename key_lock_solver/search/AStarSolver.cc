@@ -147,26 +147,32 @@ bool AStarSolver::haveCollision(size_t firstIndex, size_t secondIndex,
                                 Vec3 firstPosition, Vec3 secondPosition) {
   Vec3 offset;
   if (secondIndex < firstIndex) {
-    auto t = firstIndex;
-    firstIndex = secondIndex;
-    secondIndex = t;
-    offset = firstPosition - secondPosition;
-  } else {
+    std::swap(firstIndex, secondIndex);
     offset = secondPosition - firstPosition;
+  } else {
+    offset = firstPosition - secondPosition;
   }
 
-  offset = -offset;
+  // no collision if x, y, or z component of offset >= 7
+  if (simd_any(6 - simd_abs(offset))) { return false; }
 
-  auto& firstBody = movablePieces[firstIndex];
-  auto& secondBody = movablePieces[secondIndex];
-  if (!firstBody.boundingBox.intersects(secondBody.boundingBox, offset)) {
-    return false;
-  }
+  // check cache
   CollisionCache::CacheValue cv =
     collisionCache.cacheValue(firstIndex,secondIndex, offset);
   if (cv != impl::CollisionCache::NotStored) {
     return cv == CollisionCache::Collision;
   }
+
+  // check bounding box
+  auto& firstBody = movablePieces[firstIndex];
+  auto& secondBody = movablePieces[secondIndex];
+  if (!firstBody.boundingBox.intersects(secondBody.boundingBox, offset)) {
+    collisionCache.setCacheValue(firstIndex, secondIndex, offset,
+                                 impl::CollisionCache::NoCollision);
+    return false;
+  }
+
+  // check points
   auto result = firstBody.pointsIntersect(secondBody, offset);
   cv = result ? CollisionCache::Collision : CollisionCache::NoCollision;
   collisionCache.setCacheValue(firstIndex, secondIndex, offset, cv);
