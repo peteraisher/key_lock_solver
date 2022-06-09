@@ -49,6 +49,8 @@ struct State {
   size_t storage[2] {};
   size_t encodedBitsForPiece(size_t i) const;
 
+  void resetPiecePosition(size_t index);
+
  public:
   bool canRemovePiece(size_t index) const;
   bool isRemovedPiece(size_t index) const;

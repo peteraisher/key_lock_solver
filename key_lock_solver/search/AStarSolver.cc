@@ -121,7 +121,6 @@ size_t AStarSolver::cascadeMove(size_t index, Vec3 move,
         || !haveCollision(index, i, newPos, state->getPosition(i))) {
       continue;
     }
-    if ((*moved)[i]) { return 0; }
     size_t res = cascadeMove(i, move, state, moved);
     if (res) {
       tot += res;
@@ -307,7 +306,7 @@ void AStarSolver::solve(State state) {
   State lastSolveState = state;
   std::vector<State> totalSolution = {state};
 
-  for (size_t i = 0; i < 9; ++i) {
+  for (size_t i = 0; i < PIECE_COUNT; ++i) {
     std::vector<State> solution =
     a_star<State>(
       lastSolveState,

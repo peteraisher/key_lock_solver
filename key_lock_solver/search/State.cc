@@ -37,6 +37,14 @@ static inline size_t bitIndexForPieceVector(size_t i) {
 
 namespace key_lock_solver {
 
+void State::resetPiecePosition(size_t index) {
+  size_t mask = 0xfffULL << bitIndexForPieceVector(index);
+  size_t zero = 0x888ULL << bitIndexForPieceVector(index);
+  size_t vector = storage[storageIndexForPiece(index)] & mask;
+  storage[storageIndexForPiece(index)] ^= vector;
+  storage[storageIndexForPiece(index)] |= zero;
+}
+
 bool State::canRemovePiece(size_t index) const {
   size_t enc = encodedBitsForPiece(index);
   enc >>= (index & ~0x3);
@@ -46,6 +54,7 @@ bool State::canRemovePiece(size_t index) const {
 
 void State::removePiece(size_t index) {
   storage[1] |= (1ULL << (index + kSlotTwoOffset));
+  resetPiecePosition(index);
 }
 
 void State::movePosition(size_t i, Vec3 diff) {
