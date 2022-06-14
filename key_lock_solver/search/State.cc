@@ -45,11 +45,16 @@ void State::resetPiecePosition(size_t index) {
   storage[storageIndexForPiece(index)] |= zero;
 }
 
-bool State::canRemovePiece(size_t index) const {
+size_t State::encodedPositionAlongRemovalAxis(size_t index) const {
   size_t enc = encodedBitsForPiece(index);
   enc >>= (index & ~0x3);
   enc &= 0xf;
-  return enc == 1 || enc == 0xf;
+  return enc;
+}
+
+bool State::canRemovePiece(size_t index) const {
+  size_t pos = encodedPositionAlongRemovalAxis(index);
+  return pos == 1 || pos == 0xf;
 }
 
 void State::removePiece(size_t index) {
@@ -57,29 +62,60 @@ void State::removePiece(size_t index) {
   resetPiecePosition(index);
 }
 
-void State::movePosition(size_t i, Vec3 diff) {
-  char s;
-  size_t componentOffset = 0;
+static void componentOffsetAndValueForNonzeroDirection(Vec3 diff,
+                                                       size_t* componentOffset,
+                                                       char* s) {
   if (diff.x) {
-    s = diff.x;
+    *s = diff.x;
+    *componentOffset = 0;
   } else if (diff.y) {
-    s = diff.y;
-    componentOffset = 4;
+    *s = diff.y;
+    *componentOffset = 4;
   } else {
-    s = diff.z;
-    componentOffset = 8;
+    *s = diff.z;
+    *componentOffset = 8;
   }
+}
+
+void State::movePosition(size_t i, Vec3 diff) {
+  char value;
+  size_t componentOffset;
+  componentOffsetAndValueForNonzeroDirection(diff, &componentOffset, &value);
   size_t change = 1ULL << (bitIndexForPieceVector(i) + componentOffset);
-  if (s == 1) {
+  if (value == 1) {
     storage[storageIndexForPiece(i)] += change;
   } else {
     storage[storageIndexForPiece(i)] -= change;
   }
 }
 
+size_t State::distanceFromRemoval(size_t i) const {
+  if (isRemovedPiece(i)) {
+    return 0;
+  }
+  size_t pos = encodedPositionAlongRemovalAxis(i);
+  return (pos > 8) ? 16 - pos : pos;
+}
+
+size_t State::distanceFromOther(size_t i, const State& other) const {
+  size_t pos = encodedPositionAlongRemovalAxis(i);
+  size_t otherPos = other.encodedPositionAlongRemovalAxis(i);
+  return (pos > otherPos) ? pos - otherPos : otherPos - pos;
+}
+
 size_t State::encodedBitsForPiece(size_t i) const {
   return (storage[storageIndexForPiece(i)] >> bitIndexForPieceVector(i))
     & 0xfff;
+}
+
+size_t State::removedFlags() const {
+  return storage[1] >> kSlotTwoOffset;
+}
+
+bool State::removedPiecesAreSubsetOf(const State &other) const {
+  size_t flags = removedFlags();
+  size_t otherFlags = other.removedFlags();
+  return (flags & otherFlags) == flags;
 }
 
 Vec3 State::getPosition(size_t i) const {

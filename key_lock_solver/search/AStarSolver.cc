@@ -180,32 +180,17 @@ bool AStarSolver::haveCollision(size_t firstIndex, size_t secondIndex,
 
 static inline float searchHeuristic(State state) {
   int result = 0;
-  size_t i = 0;
-  for (; i < 4; ++i) {
-    if (state.isRemovedPiece(i)) {continue;}
-    result += std::max(8 - abs(state.getPosition(i).x), 0);
-  }
-  for (; i < 8; ++i) {
-    if (state.isRemovedPiece(i)) {continue;}
-    result += std::max(8 - abs(state.getPosition(i).y), 0);
-  }
-  if (!state.isRemovedPiece(i)) {
-    result += std::max(8 - abs(state.getPosition(i).z), 0);
+  for (size_t i = 0; i < PIECE_COUNT; ++i) {
+    result += state.distanceFromRemoval(i);
   }
   return static_cast<float>(result);
 }
 
-static inline float resetHeuristic(State state,
-                                   State target) {
+static inline float resetHeuristic(State state, State target) {
   int result = 0;
-  size_t i = 0;
-  for (; i < 4; ++i) {
-    result += abs(state.getPosition(i).x - target.getPosition(i).x);
+  for (size_t i = 0; i < PIECE_COUNT; ++i) {
+    result += state.distanceFromOther(i, target);
   }
-  for (; i < 8; ++i) {
-    result += abs(state.getPosition(i).y - target.getPosition(i).y);
-  }
-  result += abs(state.getPosition(i).z - target.getPosition(i).z);
   return static_cast<float>(result);
 }
 
@@ -245,9 +230,8 @@ static void removeEmptySteps(std::vector<Step>* steps) {
 }
 
 static void printSolution(std::vector<State> solution,
-                   State start, std::ostream& out = std::cout) {
-  State lastState = start;
-
+                          std::ostream& out = std::cout) {
+  State lastState = solution.front();
 
   std::vector<Step> steps {};
 
@@ -268,94 +252,193 @@ static void printSolution(std::vector<State> solution,
 }
 
 std::vector<std::pair<State, float>>
-AStarSolver::possibleMoves(State state) {
-  std::vector<std::pair<State, float>> result {};
-  result.reserve(48);
+AStarSolver::getPossibleMoves(State state) {
+  populatePossibleMoves(state);
+  return possibleMoves;
+}
+
+void AStarSolver::clearPossibleMoves() {
+  possibleMoves.reserve(48);
+  possibleMoves.resize(0);
+}
+
+void AStarSolver::addMoveRemovingPiece(size_t i, const State &start) {
+  auto newState = start;
+  newState.removePiece(i);
+  possibleMoves.emplace_back(newState, 0.f);
+}
+
+bool AStarSolver::skipOrRemovePiece(size_t i, const State &start) {
+  if (start.isRemovedPiece(i)) {
+    return true;
+  }
+  if (start.canRemovePiece(i)) {
+    addMoveRemovingPiece(i, start);
+    return true;
+  }
+  return false;
+}
+
+static float costFromMovedPieceCount(size_t res) {
+  return sqrtf(static_cast<float>(res));
+}
+
+void AStarSolver::addCascadedMoveIfPossible(size_t i, const Vec3 &move,
+                                            const State &start) {
+  auto stateCopy = start;
+  std::array<bool, PIECE_COUNT> moved {};
+  size_t res = cascadeMove(i, move, &stateCopy, &moved);
+  if (res) {
+    float cost = costFromMovedPieceCount(res);
+    possibleMoves.emplace_back(stateCopy, cost);
+  }
+}
+
+void AStarSolver::addPossibleMovesForPiece(size_t i, const State &start) {
+  if (skipOrRemovePiece(i, start)) {
+    return;
+  }
+
   std::array<Vec3, 6> moves = {
     Vec3{1, 0, 0}, {-1, 0, 0},
     {0, 1, 0}, {0, -1, 0},
     {0, 0, 1}, {0, 0, -1}
   };
 
-  for (size_t i = 0; i < PIECE_COUNT; ++i) {
-    if (state.isRemovedPiece(i)) {
-      continue;
-    }
-
-    if (state.canRemovePiece(i)) {
-      auto newState = state;
-      newState.removePiece(i);
-      result.emplace_back(newState, 0.f);
-      continue;
-    }
-    for (const auto& move : moves) {
-      auto stateCopy = state;
-      std::array<bool, PIECE_COUNT> moved {};
-      size_t res = cascadeMove(i, move, &stateCopy, &moved);
-      if (res) {
-        float cost = static_cast<float>(res);
-        cost = sqrtf(cost);
-        result.push_back({stateCopy, cost});
-      }
-    }
+  for (const auto& move : moves) {
+    addCascadedMoveIfPossible(i, move, start);
   }
-  return result;
 }
 
-void AStarSolver::solve(State state) {
-  State lastSolveState = state;
-  std::vector<State> totalSolution = {state};
+static void printFailureMessage(const State &lastSolveState) {
+  auto rc = lastSolveState.removedCount();
+  std::cout << "Failed to find solution on step " << rc + 1 << std::endl;
+  std::cout << "Removed " << rc << " pieces." << std::endl;
+}
+
+void
+AStarSolver::populatePossibleMoves(State state) {
+  clearPossibleMoves();
 
   for (size_t i = 0; i < PIECE_COUNT; ++i) {
-    std::vector<State> solution =
-    a_star<State>(
-      lastSolveState,
-      [&i](State s){return s.removedCount() > i;},
-      [&](State s){return possibleMoves(s);}, searchHeuristic);
-    if (solution.empty()) {
-      auto rc = lastSolveState.removedCount();
-      std::cout << "Failed to find solution on step " << i + 1 << std::endl;
-      std::cout << "Removed " << rc << " pieces." << std::endl;
-      return;
-    }
+    addPossibleMovesForPiece(i, state);
+  }
+}
+
+enum SolveType {
+  Solve = 0,
+  Reset = 1
+};
+
+class ProgressiveSolveHelper {
+  template <class T>
+  using SuccessorFunc = std::function<std::vector<std::pair<T, float>>(T)>;
+
+  AStarSolver* solver = nullptr;
+  State interimSolve;
+  std::vector<State> partialSolution;
+  SuccessorFunc<State> successorFunc;
+  bool solveFailed = false;
+
+  void findPartialSolution(size_t removalTarget) {
+    auto goalFunc = goalFuncForStep(removalTarget);
+    partialSolution =
+      a_star<State>(interimSolve, goalFunc, successorFunc, searchHeuristic);
+    solveFailed = partialSolution.empty();
+  }
+
+  void appendPartialSolutionToTotalSolution() {
     totalSolution.pop_back();
     totalSolution.insert(totalSolution.end(),
-                         solution.rbegin(), solution.rend());
-    lastSolveState = totalSolution.back();
+                         partialSolution.rbegin(), partialSolution.rend());
+    interimSolve = totalSolution.back();
   }
-  printSolution(totalSolution, state);
+  void reverseSolutionIfNeeded() {
+    if (reverseBeforePrinting) {
+      std::reverse(totalSolution.begin(), totalSolution.end());
+      reverseBeforePrinting = false;
+    }
+  }
+
+  void outputSolution() {
+    reverseSolutionIfNeeded();
+    printSolution(totalSolution);
+  }
+
+  void progressiveSolve() {
+    for (size_t removalTarget = 0; removalTarget < PIECE_COUNT;
+         ++removalTarget) {
+      findPartialSolution(removalTarget);
+      if (solveFailed) { return; }
+      appendPartialSolutionToTotalSolution();
+    }
+  }
+
+  void printResults() {
+    if (solveFailed) {
+      printFailureMessage(interimSolve);
+    } else {
+      outputSolution();
+    }
+  }
+
+ protected:
+  using GoalFunc = std::function<bool(State)>;
+  std::vector<State> totalSolution;
+
+  bool reverseBeforePrinting = false;
+
+  virtual GoalFunc goalFuncForStep(size_t step) {
+    return [=](State s){return s.removedCount() > step;};
+  }
+
+  virtual void performSetupForStartState(const State &start) {
+    interimSolve = start;
+    totalSolution = {start};
+    solveFailed = false;
+  }
+
+ public:
+  explicit ProgressiveSolveHelper(AStarSolver* solver)
+  : solver(solver) {
+    successorFunc = [&](State s){return this->solver->getPossibleMoves(s);};
+  }
+
+  void solve(State start) {
+    performSetupForStartState(start);
+    progressiveSolve();
+    printResults();
+  }
+};
+
+class ProgressiveResetHelper : public ProgressiveSolveHelper {
+  State target;
+
+  GoalFunc goalFuncForStep(size_t step) override {
+    return [&, step](State s){
+      return (s.removedCount() > step) && s.removedPiecesAreSubsetOf(target);
+    };
+  }
+
+  void performSetupForStartState(const State& start) override {
+    ProgressiveSolveHelper::performSetupForStartState({});
+    target = start;
+    reverseBeforePrinting = true;
+  }
+
+ public:
+  explicit ProgressiveResetHelper(AStarSolver* solver)
+  : ProgressiveSolveHelper(solver) {}
+};
+
+void AStarSolver::solve(State start) {
+  auto helper = ProgressiveSolveHelper(this);
+  helper.solve(start);
 }
 
 void AStarSolver::reset(State target) {
-  State state {};
-  State lastSolveState = state;
-  std::vector<State> totalSolution = {state};
-  for (size_t i = 0; i <= target.removedCount(); ++i) {
-    std::vector<State> solution =
-    a_star<State>(
-      lastSolveState,
-      [&](State s){
-        if (s.removedCount() < i) { return false;}
-        for (size_t j = 0; j < PIECE_COUNT; ++j) {
-          if (s.isRemovedPiece(j) && !target.isRemovedPiece(j)) {return false;}
-        }
-        return s.removedCount() > i || s == target;
-      },
-      [&](State s){return possibleMoves(s);},
-      [&](State s){return resetHeuristic(s, target);});
-    if (solution.empty()) {
-      auto rc = lastSolveState.removedCount();
-      std::cout << "Failed to find solution on step " << i + 1 << std::endl;
-      std::cout << "Removed " << rc << " pieces." << std::endl;
-      return;
-    }
-    totalSolution.pop_back();
-    totalSolution.insert(totalSolution.end(),
-                         solution.rbegin(), solution.rend());
-    lastSolveState = totalSolution.back();
-  }
-  std::reverse(totalSolution.begin(), totalSolution.end());
-  printSolution(totalSolution, target);
+  auto helper = ProgressiveResetHelper(this);
+  helper.solve(target);
 }
 
 }   // namespace key_lock_solver

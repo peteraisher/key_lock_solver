@@ -26,6 +26,8 @@ class AStarSolver {
 
   static const std::array<Volume, PIECE_COUNT> movablePieces;
 
+  friend class ProgressiveSolveHelper;
+
   /// Cascade a piece move to all pieces which would collide
   /// @param index the index of the piece to move.
   /// @param move the move to make.
@@ -37,8 +39,18 @@ class AStarSolver {
   bool boxCollision(size_t index, Vec3 offset);
   bool haveCollision(size_t firstIndex, size_t secondIndex,
                      Vec3 firstPosition, Vec3 secondPosition);
-  std::vector<std::pair<State, float>>
-  possibleMoves(State state);
+
+  std::vector<std::pair<State, float>> possibleMoves {};
+
+  void clearPossibleMoves();
+  void addMoveRemovingPiece(size_t i, const key_lock_solver::State &startState);
+  bool skipOrRemovePiece(size_t i, const State& startState);
+  void addCascadedMoveIfPossible(size_t i, const Vec3& move,
+                                 const State &start);
+  void addPossibleMovesForPiece(size_t i, const State& start);
+  void populatePossibleMoves(State state);
+
+  std::vector<std::pair<State, float>> getPossibleMoves(State state);
 
  public:
   /// Solve the puzzle to remove all pieces
