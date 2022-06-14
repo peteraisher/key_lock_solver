@@ -14,6 +14,7 @@
 #include "../../key_lock_solver/search/CollisionCache.h"
 #include "../../key_lock_solver/spatial/Volume.h"
 #include "../../key_lock_solver/search/State.h"
+#include "../../key_lock_solver/search/ProgressiveSolveHelper.h"
 
 namespace key_lock_solver {
 
@@ -26,7 +27,7 @@ class AStarSolver {
 
   static const std::array<Volume, PIECE_COUNT> movablePieces;
 
-  friend class ProgressiveSolveHelper;
+  friend class impl::ProgressiveSolveHelper;
 
   /// Cascade a piece move to all pieces which would collide
   /// @param index the index of the piece to move.

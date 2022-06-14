@@ -17,6 +17,7 @@
 		8177165B282E83D400811E83 /* AStarSolver.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771659282E83D400811E83 /* AStarSolver.cc */; };
 		8177165F28330DCA00811E83 /* Step.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8177165D28330DCA00811E83 /* Step.cc */; };
 		81771666283322D000811E83 /* CollisionCache.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81771664283322D000811E83 /* CollisionCache.cc */; };
+		81ED9C6D28588DA30019462C /* ProgressiveSolveHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81ED9C6B28588DA30019462C /* ProgressiveSolveHelper.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +54,8 @@
 		8177165E28330DCA00811E83 /* Step.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Step.h; sourceTree = "<group>"; };
 		81771664283322D000811E83 /* CollisionCache.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionCache.cc; sourceTree = "<group>"; };
 		81771665283322D000811E83 /* CollisionCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollisionCache.h; sourceTree = "<group>"; };
+		81ED9C6B28588DA30019462C /* ProgressiveSolveHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ProgressiveSolveHelper.cpp; sourceTree = "<group>"; };
+		81ED9C6C28588DA30019462C /* ProgressiveSolveHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgressiveSolveHelper.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +112,8 @@
 		817716622833118B00811E83 /* search */ = {
 			isa = PBXGroup;
 			children = (
+				81ED9C6C28588DA30019462C /* ProgressiveSolveHelper.h */,
+				81ED9C6B28588DA30019462C /* ProgressiveSolveHelper.cpp */,
 				81771665283322D000811E83 /* CollisionCache.h */,
 				81771664283322D000811E83 /* CollisionCache.cc */,
 				8177165A282E83D400811E83 /* AStarSolver.h */,
@@ -212,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8177165F28330DCA00811E83 /* Step.cc in Sources */,
+				81ED9C6D28588DA30019462C /* ProgressiveSolveHelper.cpp in Sources */,
 				81771666283322D000811E83 /* CollisionCache.cc in Sources */,
 				81771658282D586D00811E83 /* a_star.cc in Sources */,
 				81771652282D50D100811E83 /* State.cc in Sources */,
