@@ -56,6 +56,8 @@ struct State {
  public:
   size_t distanceFromRemoval(size_t i) const;
   size_t distanceFromOther(size_t i, const State& other) const;
+  size_t distanceFromOtherOrRemoval(size_t i, const State& other) const;
+  size_t minTotalDistanceFromOther(const State& other) const;
   bool canRemovePiece(size_t index) const;
   bool isRemovedPiece(size_t index) const;
   bool removedPiecesAreSubsetOf(const State& other) const;

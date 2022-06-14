@@ -178,22 +178,6 @@ bool AStarSolver::haveCollision(size_t firstIndex, size_t secondIndex,
   return result;
 }
 
-static inline float searchHeuristic(State state) {
-  int result = 0;
-  for (size_t i = 0; i < PIECE_COUNT; ++i) {
-    result += state.distanceFromRemoval(i);
-  }
-  return static_cast<float>(result);
-}
-
-static inline float resetHeuristic(State state, State target) {
-  int result = 0;
-  for (size_t i = 0; i < PIECE_COUNT; ++i) {
-    result += state.distanceFromOther(i, target);
-  }
-  return static_cast<float>(result);
-}
-
 static void consolidateStepsInSameDirection(std::vector<Step>* steps) {
   auto consolidatedStep = steps->begin();
   auto readStep = steps->begin();
@@ -333,12 +317,17 @@ enum SolveType {
 class ProgressiveSolveHelper {
   template <class T>
   using SuccessorFunc = std::function<std::vector<std::pair<T, float>>(T)>;
+  using GoalFunc = std::function<bool(State)>;
 
   AStarSolver* solver = nullptr;
   State interimSolve;
+  State target;
   std::vector<State> partialSolution;
+  std::vector<State> totalSolution;
   SuccessorFunc<State> successorFunc;
+  std::function<float(State)> searchHeuristic;
   bool solveFailed = false;
+  bool reverseBeforePrinting = false;
 
   void findPartialSolution(size_t removalTarget) {
     auto goalFunc = goalFuncForStep(removalTarget);
@@ -382,53 +371,47 @@ class ProgressiveSolveHelper {
     }
   }
 
- protected:
-  using GoalFunc = std::function<bool(State)>;
-  std::vector<State> totalSolution;
-
-  bool reverseBeforePrinting = false;
-
-  virtual GoalFunc goalFuncForStep(size_t step) {
-    return [=](State s){return s.removedCount() > step;};
+  GoalFunc goalFuncForStep(size_t step) {
+    return [&, step](State s){
+      return (s.removedCount() > step) && s.removedPiecesAreSubsetOf(target);
+    };
   }
 
-  virtual void performSetupForStartState(const State &start) {
+  void performSetupForStartState(const State &start) {
     interimSolve = start;
     totalSolution = {start};
     solveFailed = false;
+  }
+
+  void setTarget(State target) {
+    this->target = target;
+  }
+
+  void internalSolve(State start, State target, bool reverse) {
+    performSetupForStartState(start);
+    setTarget(target);
+    reverseBeforePrinting = reverse;
+    progressiveSolve();
   }
 
  public:
   explicit ProgressiveSolveHelper(AStarSolver* solver)
   : solver(solver) {
     successorFunc = [&](State s){return this->solver->getPossibleMoves(s);};
-  }
-
-  void solve(State start) {
-    performSetupForStartState(start);
-    progressiveSolve();
-    printResults();
-  }
-};
-
-class ProgressiveResetHelper : public ProgressiveSolveHelper {
-  State target;
-
-  GoalFunc goalFuncForStep(size_t step) override {
-    return [&, step](State s){
-      return (s.removedCount() > step) && s.removedPiecesAreSubsetOf(target);
+    searchHeuristic = [&](State s){
+      return static_cast<float>(s.minTotalDistanceFromOther(target));
     };
   }
 
-  void performSetupForStartState(const State& start) override {
-    ProgressiveSolveHelper::performSetupForStartState({});
-    target = start;
-    reverseBeforePrinting = true;
+  void solve(State start) {
+    internalSolve(start, State::solved(), false);
+    printResults();
   }
 
- public:
-  explicit ProgressiveResetHelper(AStarSolver* solver)
-  : ProgressiveSolveHelper(solver) {}
+  void reset(State start) {
+    internalSolve({}, start, true);
+    printResults();
+  }
 };
 
 void AStarSolver::solve(State start) {
@@ -436,9 +419,9 @@ void AStarSolver::solve(State start) {
   helper.solve(start);
 }
 
-void AStarSolver::reset(State target) {
-  auto helper = ProgressiveResetHelper(this);
-  helper.solve(target);
+void AStarSolver::reset(State start) {
+  auto helper = ProgressiveSolveHelper(this);
+  helper.reset(start);
 }
 
 }   // namespace key_lock_solver

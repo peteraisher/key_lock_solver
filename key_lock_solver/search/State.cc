@@ -118,6 +118,19 @@ bool State::removedPiecesAreSubsetOf(const State &other) const {
   return (flags & otherFlags) == flags;
 }
 
+size_t State::distanceFromOtherOrRemoval(size_t i, const State &other) const {
+  return other.isRemovedPiece(i) ? distanceFromRemoval(i)
+                                 : distanceFromOther(i, other);
+}
+
+size_t State::minTotalDistanceFromOther(const State &other) const {
+  size_t total = 0;
+  for (size_t i = 0; i < PIECE_COUNT; ++i) {
+    total += distanceFromOtherOrRemoval(i, other);
+  }
+  return total;
+}
+
 Vec3 State::getPosition(size_t i) const {
   size_t enc = encodedBitsForPiece(i);
   Vec3 result {0, 0, 0};
